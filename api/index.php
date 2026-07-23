@@ -1,6 +1,6 @@
 <?php
 
-// Create writable storage directories in Vercel's /tmp environment
+// 1. Create writable storage directories in Vercel's /tmp environment
 $directories = [
     '/tmp/storage/framework/views',
     '/tmp/storage/framework/cache/data',
@@ -15,18 +15,29 @@ foreach ($directories as $dir) {
     }
 }
 
-// Default environment fallback settings for Vercel deployment
-if (!getenv('APP_KEY')) {
-    putenv('APP_KEY=base64:PGVvE56B808tV7UnQZa09mOpn8L9TN+1HjXT2b8g5Xk=');
-}
-if (!getenv('APP_ENV')) {
-    putenv('APP_ENV=production');
-}
-if (!getenv('APP_DEBUG')) {
-    putenv('APP_DEBUG=true');
+// 2. Prepare SQLite database in /tmp
+$tmpSqlite = '/tmp/database.sqlite';
+if (!file_exists($tmpSqlite)) {
+    $srcSqlite = __DIR__ . '/../database/database.sqlite';
+    if (file_exists($srcSqlite)) {
+        copy($srcSqlite, $tmpSqlite);
+    } else {
+        touch($tmpSqlite);
+    }
 }
 
-// Set environment variables for storage paths in Vercel Serverless
+// 3. Fallback environment settings for Vercel Serverless
+putenv('APP_KEY=base64:PGVvE56B808tV7UnQZa09mOpn8L9TN+1HjXT2b8g5Xk=');
+putenv('APP_ENV=production');
+putenv('APP_DEBUG=true');
+
+// Fix Read-Only filesystem logging & session errors
+putenv('LOG_CHANNEL=stderr');
+putenv('SESSION_DRIVER=cookie');
+putenv('DB_CONNECTION=sqlite');
+putenv('DB_DATABASE=' . $tmpSqlite);
+
+// Storage path overrides for Vercel
 putenv('VIEW_COMPILED_PATH=/tmp/storage/framework/views');
 putenv('APP_CONFIG_CACHE=/tmp/bootstrap/cache/config.php');
 putenv('APP_SERVICES_CACHE=/tmp/bootstrap/cache/services.php');
