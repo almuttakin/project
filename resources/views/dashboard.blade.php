@@ -2,7 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0f5132">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Dashboard & Manajemen Timbangan - PTPN IV reg III</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,13 +28,34 @@
             --sidebar-collapsed: 78px;
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
             background-color: #f0f4f2;
-            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
             overflow-x: hidden;
             color: #2d3a33;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== SIDEBAR OVERLAY (MOBILE) ===== */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(3px);
+            z-index: 1040;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* ===== SIDEBAR ===== */
@@ -44,12 +67,14 @@
             background: linear-gradient(175deg, var(--forest-900) 0%, var(--forest-700) 50%, var(--forest-600) 100%);
             color: #fff;
             padding-top: 0;
-            z-index: 1000;
-            transition: width 0.35s cubic-bezier(.4,0,.2,1);
-            overflow: hidden;
+            z-index: 1050;
+            transition: width 0.35s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
+            overflow-y: auto;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             box-shadow: 4px 0 24px rgba(6, 78, 43, 0.15);
+            -webkit-overflow-scrolling: touch;
         }
         .sidebar.collapsed {
             width: var(--sidebar-collapsed);
@@ -97,19 +122,17 @@
             font-size: 1.15rem;
             transition: all 0.3s ease;
             flex-shrink: 0;
+            touch-action: manipulation;
         }
-        .sidebar-toggle-header:hover {
+        .sidebar-toggle-header:hover, .sidebar-toggle-header:active {
             background: var(--forest-600);
             color: #fff;
             border-color: var(--forest-600);
-            transform: scale(1.06);
+            transform: scale(1.04);
             box-shadow: 0 4px 14px rgba(25, 135, 84, 0.3);
         }
         .sidebar-toggle-header i {
             transition: transform 0.35s ease;
-        }
-        .sidebar.collapsed ~ #mainContent .sidebar-toggle-header i {
-            transform: rotate(180deg);
         }
 
         /* Nav Links */
@@ -119,7 +142,7 @@
         }
         .sidebar .nav-link {
             color: rgba(255, 255, 255, 0.7);
-            padding: 11px 20px;
+            padding: 12px 20px;
             margin: 3px 12px;
             border-radius: 10px;
             font-weight: 500;
@@ -135,6 +158,8 @@
             transition: all 0.25s ease;
             white-space: nowrap;
             overflow: hidden;
+            touch-action: manipulation;
+            min-height: 44px;
         }
         .sidebar .nav-link i {
             font-size: 1.15rem;
@@ -150,7 +175,7 @@
         .sidebar.collapsed .nav-link .link-text {
             opacity: 0;
         }
-        .sidebar .nav-link:hover {
+        .sidebar .nav-link:hover, .sidebar .nav-link:active {
             color: #fff;
             background: rgba(255, 255, 255, 0.1);
         }
@@ -258,7 +283,7 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        .hero-card:hover {
+        .hero-card:hover, .hero-card:active {
             transform: translateY(-4px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
             background: rgba(255, 255, 255, 0.16);
@@ -308,6 +333,9 @@
         }
 
         /* ===== TABLE ===== */
+        .table-responsive {
+            -webkit-overflow-scrolling: touch;
+        }
         .table thead th {
             background: var(--forest-50);
             color: var(--forest-900);
@@ -317,6 +345,7 @@
             letter-spacing: 0.5px;
             border-bottom: 2px solid var(--forest-200);
             padding: 12px 14px;
+            white-space: nowrap;
         }
         .table tbody tr {
             transition: background 0.2s ease;
@@ -328,15 +357,17 @@
             padding: 12px 14px;
             font-size: 0.88rem;
             vertical-align: middle;
+            white-space: nowrap;
         }
 
         /* ===== FORM STYLING ===== */
         .form-control, .form-select {
             border-radius: 10px;
             border: 1.5px solid #d6e4dc;
-            font-size: 0.88rem;
-            padding: 9px 14px;
+            font-size: 0.9rem;
+            padding: 10px 14px;
             transition: all 0.2s ease;
+            min-height: 44px;
         }
         .form-control:focus, .form-select:focus {
             border-color: var(--forest-500);
@@ -345,7 +376,7 @@
         .form-label {
             color: var(--forest-900);
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
         }
 
         /* ===== BUTTONS ===== */
@@ -353,12 +384,15 @@
             background: linear-gradient(135deg, var(--forest-600), var(--forest-500));
             border: none;
             border-radius: 10px;
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-weight: 600;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
             box-shadow: 0 3px 10px rgba(25, 135, 84, 0.25);
+            min-height: 46px;
+            touch-action: manipulation;
         }
-        .btn-success:hover {
+        .btn-success:hover, .btn-success:active {
             background: linear-gradient(135deg, var(--forest-700), var(--forest-600));
             transform: translateY(-1px);
             box-shadow: 0 5px 16px rgba(25, 135, 84, 0.35);
@@ -418,7 +452,7 @@
         }
 
         /* ===== SCROLLBAR ===== */
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f0f4f2; }
         ::-webkit-scrollbar-thumb { background: var(--forest-300); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--forest-500); }
@@ -435,9 +469,90 @@
         .animate-in:nth-child(2) { animation-delay: 0.1s; }
         .animate-in:nth-child(3) { animation-delay: 0.15s; }
         .animate-in:nth-child(4) { animation-delay: 0.2s; }
+
+        /* ===== RESPONSIVE MEDIA QUERIES (ANDROID & MOBILE OPTIMIZATION) ===== */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 270px !important;
+                box-shadow: 8px 0 32px rgba(0, 0, 0, 0.25);
+            }
+            .sidebar.show-mobile {
+                transform: translateX(0);
+            }
+            .sidebar.collapsed {
+                width: 270px !important;
+            }
+            .sidebar.collapsed .brand-text,
+            .sidebar.collapsed .nav-link .link-text,
+            .sidebar.collapsed .sidebar-footer span {
+                opacity: 1 !important;
+                width: auto !important;
+            }
+            .main-content, .main-content.expanded {
+                margin-left: 0 !important;
+                padding: 16px 14px;
+            }
+            .header-bar {
+                padding: 14px 16px;
+                border-radius: 12px;
+                margin-bottom: 16px;
+            }
+            .header-bar h3 {
+                font-size: 1.1rem;
+            }
+            .header-bar small {
+                font-size: 0.72rem !important;
+            }
+            .user-badge .user-role {
+                display: none;
+            }
+            .hero-banner {
+                padding: 20px 18px;
+                border-radius: 14px;
+                margin-bottom: 18px;
+            }
+            .hero-banner h2 {
+                font-size: 1.25rem;
+            }
+            .hero-card {
+                padding: 14px 12px;
+                border-radius: 12px;
+            }
+            .hero-card h3 {
+                font-size: 1.2rem;
+            }
+            .custom-card {
+                padding: 18px 14px !important;
+                border-radius: 14px;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .header-bar {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .user-badge .user-name {
+                display: none;
+            }
+            .user-badge {
+                padding: 4px;
+                border-radius: 50%;
+            }
+            .hero-card h3 {
+                font-size: 1.05rem;
+            }
+            .hero-card small.text-white-50 {
+                font-size: 0.65rem;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <!-- ===== SIDEBAR OVERLAY (MOBILE) ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- ===== SIDEBAR NAVIGATION ===== -->
     <div class="sidebar" id="sidebar">
@@ -488,7 +603,7 @@
                     <small class="text-muted" style="font-size: 0.8rem;">Monitoring Timbangan & SAP XML Generator</small>
                 </div>
             </div>
-            <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-2 gap-sm-3">
                 <button class="btn btn-light rounded-circle shadow-sm position-relative" style="width: 40px; height: 40px; color: var(--forest-700);">
                     <i class="bi bi-bell"></i>
                     <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="width: 10px; height: 10px; margin-left: -12px; margin-top: 4px;"></span>
@@ -526,29 +641,29 @@
                     <h2>Selamat Datang, Akin! 👋</h2>
                     <p class="mb-0 text-white-50" style="font-size: 0.9rem;">Ringkasan performa & analisis gangguan timbangan PKS hari ini.</p>
                     
-                    <div class="row g-3 mt-3">
-                        <div class="col-md-3 col-6">
+                    <div class="row g-2 g-md-3 mt-3">
+                        <div class="col-6 col-md-3">
                             <div class="hero-card animate-in">
                                 <small class="text-white-50">Total Kendaraan</small>
                                 <h3 class="fw-bold my-1">{{ count($logs) }} <small style="font-size: 0.6em; font-weight: 500;">Truk</small></h3>
                                 <small style="color: var(--forest-300);"><i class="bi bi-truck me-1"></i>Hari ini</small>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6">
+                        <div class="col-6 col-md-3">
                             <div class="hero-card animate-in">
-                                <small class="text-white-50">Total Tonase (Netto)</small>
+                                <small class="text-white-50">Total Tonase</small>
                                 <h3 class="fw-bold my-1">{{ number_format(collect($logs)->sum('netto')) }} <small style="font-size: 0.6em; font-weight: 500;">Kg</small></h3>
-                                <small style="color: var(--forest-300);"><i class="bi bi-bar-chart-fill me-1"></i>Akumulasi</small>
+                                <small style="color: var(--forest-300);"><i class="bi bi-bar-chart-fill me-1"></i>Netto</small>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6">
+                        <div class="col-6 col-md-3">
                             <div class="hero-card animate-in">
                                 <small class="text-white-50">Timbangan Mati</small>
                                 <h3 class="fw-bold my-1 text-warning">1 <small style="font-size: 0.6em; font-weight: 500;">Lokasi</small></h3>
                                 <small class="text-warning"><i class="bi bi-exclamation-triangle me-1"></i>Perlu dicek</small>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6">
+                        <div class="col-6 col-md-3">
                             <div class="hero-card animate-in">
                                 <small class="text-white-50">VPN Trouble</small>
                                 <h3 class="fw-bold my-1" style="color: #ff8a8a;">1 <small style="font-size: 0.6em; font-weight: 500;">IP</small></h3>
@@ -561,7 +676,7 @@
                 <!-- Chart & Activity -->
                 <div class="row g-4">
                     <div class="col-lg-8">
-                        <div class="card custom-card p-4 animate-in">
+                        <div class="card custom-card p-3 p-md-4 animate-in">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div>
                                     <h5 class="fw-bold mb-0" style="color: var(--forest-900);">Grafik Est. Tonase Masuk</h5>
@@ -571,11 +686,13 @@
                                     <i class="bi bi-bar-chart-fill me-1"></i> Live
                                 </span>
                             </div>
-                            <canvas id="salesChart" height="120"></canvas>
+                            <div style="position: relative; width: 100%; height: 260px;">
+                                <canvas id="salesChart"></canvas>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <div class="card custom-card p-4 problem-card animate-in">
+                        <div class="card custom-card p-3 p-md-4 problem-card animate-in">
                             <h5 class="fw-bold mb-3" style="color: #ee5a5a;">
                                 <i class="bi bi-exclamation-triangle-fill me-2"></i>Historical Problem
                             </h5>
@@ -614,7 +731,7 @@
                 <div class="row g-4">
                     <!-- Form Input -->
                     <div class="col-lg-4">
-                        <div class="card custom-card p-4 animate-in">
+                        <div class="card custom-card p-3 p-md-4 animate-in">
                             <div class="d-flex align-items-center gap-2 mb-3">
                                 <div style="width: 36px; height: 36px; background: var(--forest-50); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--forest-600);">
                                     <i class="bi bi-plus-circle-fill"></i>
@@ -684,7 +801,7 @@
 
                     <!-- Tabel Data -->
                     <div class="col-lg-8">
-                        <div class="card custom-card p-4 animate-in">
+                        <div class="card custom-card p-3 p-md-4 animate-in">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="d-flex align-items-center gap-2">
                                     <div style="width: 36px; height: 36px; background: var(--forest-50); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--forest-600);">
@@ -766,22 +883,53 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // ===== SIDEBAR TOGGLE =====
+        // ===== RESPONSIVE SIDEBAR TOGGLE & DRAWER =====
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('mainContent');
         const toggleBtn = document.getElementById('sidebarToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
+        function toggleSidebar() {
+            const isMobile = window.innerWidth <= 991.98;
+            if (isMobile) {
+                sidebar.classList.toggle('show-mobile');
+                sidebarOverlay.classList.toggle('active');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            }
+        }
+
+        function closeMobileSidebar() {
+            sidebar.classList.remove('show-mobile');
+            sidebarOverlay.classList.remove('active');
+        }
+
+        toggleBtn.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', closeMobileSidebar);
+
+        // Auto close mobile drawer when clicking nav buttons on mobile
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 991.98) {
+                    closeMobileSidebar();
+                }
+            });
         });
 
-        // ===== CHART.JS - Premium Forest Theme =====
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 991.98) {
+                closeMobileSidebar();
+            }
+        });
+
+        // ===== CHART.JS - Mobile Optimized Forest Theme =====
         const ctx = document.getElementById('salesChart').getContext('2d');
         
-        const gradient = ctx.createLinearGradient(0, 0, 0, 280);
-        gradient.addColorStop(0, 'rgba(25, 135, 84, 0.75)');
-        gradient.addColorStop(0.5, 'rgba(39, 167, 106, 0.4)');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 260);
+        gradient.addColorStop(0, 'rgba(25, 135, 84, 0.85)');
+        gradient.addColorStop(0.5, 'rgba(39, 167, 106, 0.45)');
         gradient.addColorStop(1, 'rgba(39, 167, 106, 0.05)');
 
         new Chart(ctx, {
@@ -792,24 +940,24 @@
                     label: 'Tonase (Kg)',
                     data: {!! json_encode($data) !!},
                     backgroundColor: gradient,
-                    borderColor: 'rgba(15, 81, 50, 0.8)',
+                    borderColor: 'rgba(15, 81, 50, 0.85)',
                     borderWidth: 1.5,
-                    borderRadius: 8,
+                    borderRadius: 6,
                     borderSkipped: false,
-                    hoverBackgroundColor: 'rgba(25, 135, 84, 0.9)',
+                    hoverBackgroundColor: 'rgba(25, 135, 84, 0.95)',
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: { display: false },
                     tooltip: {
                         backgroundColor: '#0f5132',
-                        titleFont: { family: 'Inter', weight: '600' },
-                        bodyFont: { family: 'Inter' },
-                        padding: 12,
-                        cornerRadius: 10,
+                        titleFont: { family: 'Inter', weight: '600', size: 12 },
+                        bodyFont: { family: 'Inter', size: 12 },
+                        padding: 10,
+                        cornerRadius: 8,
                         displayColors: false,
                         callbacks: {
                             label: function(context) {
@@ -826,7 +974,7 @@
                             drawBorder: false
                         },
                         ticks: {
-                            font: { family: 'Inter', size: 11 },
+                            font: { family: 'Inter', size: 10 },
                             color: '#8a9e93',
                             callback: function(value) {
                                 return value.toLocaleString('id-ID');
@@ -836,7 +984,7 @@
                     x: {
                         grid: { display: false },
                         ticks: {
-                            font: { family: 'Inter', size: 11, weight: '500' },
+                            font: { family: 'Inter', size: 10, weight: '500' },
                             color: '#5a7066'
                         }
                     }
