@@ -15,6 +15,17 @@ foreach ($directories as $dir) {
     }
 }
 
+// Default environment fallback settings for Vercel deployment
+if (!getenv('APP_KEY')) {
+    putenv('APP_KEY=base64:PGVvE56B808tV7UnQZa09mOpn8L9TN+1HjXT2b8g5Xk=');
+}
+if (!getenv('APP_ENV')) {
+    putenv('APP_ENV=production');
+}
+if (!getenv('APP_DEBUG')) {
+    putenv('APP_DEBUG=true');
+}
+
 // Set environment variables for storage paths in Vercel Serverless
 putenv('VIEW_COMPILED_PATH=/tmp/storage/framework/views');
 putenv('APP_CONFIG_CACHE=/tmp/bootstrap/cache/config.php');
