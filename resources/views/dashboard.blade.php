@@ -1096,7 +1096,7 @@
                                             <span class="dot-green"></span>
                                         </div>
                                         <small class="text-muted font-monospace" style="font-size: 0.7rem;">
-                                            <i class="bi bi-code-square me-1"></i>SAP_NotaTimbangan_Ingest.xml
+                                            <i class="bi bi-file-earmark-code me-1 text-success"></i>Terminal_Config_Standar_PTPN4.xml
                                         </small>
                                         <div>
                                             <button class="btn btn-sm btn-outline-secondary py-0 px-2 text-white-50" style="font-size: 0.68rem;" onclick="copyStreamXml()">
@@ -1105,25 +1105,7 @@
                                         </div>
                                     </div>
                                     <div class="xml-stream-body" id="xmlStreamContainer">
-                                        <pre style="margin: 0; white-space: pre-wrap;" id="streamXmlText"><code><span class="xml-comment">&lt;!-- Live Stream Payload XML SAP (PTPN IV Regional III) --&gt;</span>
-&lt;<span class="xml-tag">PTPN4_SAP_Table_Ingest</span> <span class="xml-attr-name">xmlns:sap</span>=<span class="xml-attr-val">"urn:sap-com:document:sap:rfc"</span> <span class="xml-attr-name">regional</span>=<span class="xml-attr-val">"Regional 3"</span> <span class="xml-attr-name">total_records</span>=<span class="xml-attr-val">"{{ count($logs) }}"</span>&gt;
-  &lt;<span class="xml-tag">Header</span>&gt;
-    &lt;<span class="xml-tag">TableID</span>&gt;<span class="xml-content">TBL-WEIGHBRIDGE-HISTORICAL-{{ date('Ymd') }}</span>&lt;/<span class="xml-tag">TableID</span>&gt;
-    &lt;<span class="xml-tag">TotalTransactions</span>&gt;<span class="xml-content">{{ count($logs) }} Records</span>&lt;/<span class="xml-tag">TotalTransactions</span>&gt;
-    &lt;<span class="xml-tag">TotalNettoKg</span>&gt;<span class="xml-content">{{ number_format(is_array($logs) ? array_sum(array_column($logs, 'netto')) : $logs->sum('netto')) }} KG</span>&lt;/<span class="xml-tag">TotalNettoKg</span>&gt;
-    &lt;<span class="xml-tag">GeneratedAt</span>&gt;<span class="xml-content">{{ date('Y-m-d H:i:s') }}</span>&lt;/<span class="xml-tag">GeneratedAt</span>&gt;
-  &lt;/<span class="xml-tag">Header</span>&gt;
-  &lt;<span class="xml-tag">TableData</span>&gt;
-    &lt;<span class="xml-tag">NotaTimbanganRecord</span> <span class="xml-attr-name">row_id</span>=<span class="xml-attr-val">"1"</span>&gt;
-      &lt;<span class="xml-tag">NotaNumber</span>&gt;<span class="xml-content">NT-PKS-PBT-20260810-001</span>&lt;/<span class="xml-tag">NotaNumber</span>&gt;
-      &lt;<span class="xml-tag">NoPlat</span>&gt;<span class="xml-content">BM 8492 AU</span>&lt;/<span class="xml-tag">NoPlat</span>&gt;
-      &lt;<span class="xml-tag">PKSLocation</span>&gt;<span class="xml-content">PKS Pabatu</span>&lt;/<span class="xml-tag">PKSLocation</span>&gt;
-      &lt;<span class="xml-tag">TimbanganData</span>&gt;
-        &lt;<span class="xml-tag">BeratNetto</span>&gt;<span class="xml-content">15,300 KG</span>&lt;/<span class="xml-tag">BeratNetto</span>&gt;
-      &lt;/<span class="xml-tag">TimbanganData</span>&gt;
-    &lt;/<span class="xml-tag">NotaTimbanganRecord</span>&gt;
-  &lt;/<span class="xml-tag">TableData</span>&gt;
-&lt;/<span class="xml-tag">PTPN4_SAP_Table_Ingest</span>&gt;</code></pre>
+                                        <pre style="margin: 0; white-space: pre-wrap; font-family: 'Fira Code', 'Courier New', monospace; font-size: 0.76rem; line-height: 1.45;" id="streamXmlText"><code>{{ $latestXmlStream }}</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -1593,8 +1575,8 @@
                             <i class="bi bi-filetype-xml"></i>
                         </div>
                         <div>
-                            <h5 class="modal-title fw-bold mb-0" id="modalXmlPreviewLabel" style="font-size: 1.05rem;">Preview Skema Kode XML SAP</h5>
-                            <small class="text-white-50" id="modalXmlSubtitle" style="font-size: 0.75rem;">Nota Timbangan PTPN IV Regional III</small>
+                            <h5 class="modal-title fw-bold mb-0" id="modalXmlPreviewLabel" style="font-size: 1.05rem;">Preview Skema XML Standar Perusahaan</h5>
+                            <small class="text-white-50" id="modalXmlSubtitle" style="font-size: 0.75rem;">Standar Konfigurasi Terminal Timbangan PTPN IV</small>
                         </div>
                     </div>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -1603,34 +1585,34 @@
                     <!-- Tabs untuk Format XML -->
                     <ul class="nav nav-tabs px-3 pt-3 bg-light border-bottom" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active font-monospace fw-semibold" id="tab-sap-xml-tab" data-bs-toggle="tab" data-bs-target="#tab-sap-xml" type="button" role="tab" style="font-size: 0.82rem;">
-                                <i class="bi bi-code-slash me-1 text-success"></i>SAP Ingest Payload XML
+                            <button class="nav-link active font-monospace fw-semibold" id="tab-ado-xml-tab" data-bs-toggle="tab" data-bs-target="#tab-ado-xml" type="button" role="tab" style="font-size: 0.82rem;">
+                                <i class="bi bi-shield-check me-1 text-success"></i>Standar Perusahaan (Terminal ADO Rowset XML)
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link font-monospace fw-semibold" id="tab-ado-xml-tab" data-bs-toggle="tab" data-bs-target="#tab-ado-xml" type="button" role="tab" style="font-size: 0.82rem;">
-                                <i class="bi bi-gear-wide-connected me-1 text-primary"></i>ADO Recordset Terminal XML
+                            <button class="nav-link font-monospace fw-semibold" id="tab-sap-xml-tab" data-bs-toggle="tab" data-bs-target="#tab-sap-xml" type="button" role="tab" style="font-size: 0.82rem;">
+                                <i class="bi bi-code-slash me-1 text-primary"></i>Format Ekstensi SAP BAPI Payload
                             </button>
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <!-- SAP XML Tab -->
-                        <div class="tab-pane fade show active p-3" id="tab-sap-xml" role="tabpanel">
-                            <div class="position-relative">
-                                <textarea id="xmlSapContent" class="form-control font-monospace bg-dark text-success border-0 p-3" rows="14" readonly style="font-size: 0.82rem; border-radius: 12px; line-height: 1.45;"></textarea>
-                            </div>
-                        </div>
-                        <!-- ADO XML Tab -->
-                        <div class="tab-pane fade p-3" id="tab-ado-xml" role="tabpanel">
+                        <!-- Standar Perusahaan ADO XML Tab (Active) -->
+                        <div class="tab-pane fade show active p-3" id="tab-ado-xml" role="tabpanel">
                             <div class="position-relative">
                                 <textarea id="xmlAdoContent" class="form-control font-monospace bg-dark text-info border-0 p-3" rows="14" readonly style="font-size: 0.82rem; border-radius: 12px; line-height: 1.45;"></textarea>
+                            </div>
+                        </div>
+                        <!-- SAP XML Tab -->
+                        <div class="tab-pane fade p-3" id="tab-sap-xml" role="tabpanel">
+                            <div class="position-relative">
+                                <textarea id="xmlSapContent" class="form-control font-monospace bg-dark text-success border-0 p-3" rows="14" readonly style="font-size: 0.82rem; border-radius: 12px; line-height: 1.45;"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer bg-light justify-content-between">
                     <small class="text-muted" style="font-size: 0.76rem;">
-                        <i class="bi bi-shield-check text-success me-1"></i>Format XML ini siap dilempar via REST/RFC API SAP
+                        <i class="bi bi-shield-check text-success me-1"></i>Format XML sesuai standar resmi Terminal_backup.xml PTPN IV
                     </small>
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3" onclick="copyModalXml()">
@@ -1638,6 +1620,9 @@
                         </button>
                         <a id="btnDownloadModalXml" href="#" class="btn btn-success btn-sm rounded-pill px-3">
                             <i class="bi bi-download me-1"></i>Download File XML
+                        </a>
+                    </div>
+                </div>
                         </a>
                     </div>
                 </div>
@@ -1808,10 +1793,17 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        document.getElementById('modalXmlSubtitle').innerText = data.subtitle || 'Auto Generate Config XML (1 Tabel)';
+                        document.getElementById('modalXmlSubtitle').innerText = data.subtitle || 'Auto Generate Config XML Standar PTPN IV';
+                        document.getElementById('xmlAdoContent').value = data.xml_ado || data.xml_standard;
                         document.getElementById('xmlSapContent').value = data.xml_sap;
-                        document.getElementById('xmlAdoContent').value = data.xml_ado;
                         document.getElementById('btnDownloadModalXml').href = '/generate-xml/' + (id || 'all');
+
+                        // Pastikan tab standar perusahaan aktif saat modal dibuka
+                        const adoTab = document.getElementById('tab-ado-xml-tab');
+                        if (adoTab) {
+                            const tabTrigger = new bootstrap.Tab(adoTab);
+                            tabTrigger.show();
+                        }
 
                         const modal = new bootstrap.Modal(document.getElementById('modalXmlPreview'));
                         modal.show();

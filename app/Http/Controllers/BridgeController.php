@@ -40,9 +40,8 @@ class BridgeController extends Controller
             'vpn_trouble' => $logs->count() - $vpnOnline
         ];
 
-        // Sample XML Stream untuk widget Live Generator
-        $latestLog = $logs->first() ? $logs->first()->toArray() : null;
-        $latestXmlStream = $this->generateSapXmlString($latestLog);
+        // Sample XML Stream untuk widget Live Generator (Format Standar Perusahaan - ADO Rowset)
+        $latestXmlStream = $this->buildAdoXmlString($logs->take(4)->toArray());
 
         // Filter log yang sudah terkirim ke SAP untuk menu Log Integrasi SAP (Historical SAP Ledger)
         $sentLogs = $logs->filter(fn($i) => strtoupper($i->status_sap ?? '') === 'SENT')->values();
@@ -120,9 +119,9 @@ class BridgeController extends Controller
             'sap_doc_no'       => null,
         ]);
 
-        // Otomatis generate XML SAP per-data transaksi & simpan ke storage
+        // Otomatis generate XML Standar Perusahaan (Terminal ADO Rowset) per-data transaksi & simpan ke storage
         try {
-            $xmlContent = $this->generateSapXmlString($transaksi->toArray());
+            $xmlContent = $this->buildAdoXmlString([$transaksi->toArray()]);
             $dir = storage_path('app/xml_logs');
             if (!file_exists($dir)) {
                 mkdir($dir, 0755, true);
@@ -202,15 +201,15 @@ class BridgeController extends Controller
         if ($id === 'all' || $id === null || $id === 'table') {
             $records = TransaksiTimbangan::with('unitPks')->latest()->get();
             $selectedLogs = $records->toArray();
-            $subtitle = 'Export Rekap XML (Gabungan Historical Ledger - ' . count($selectedLogs) . ' Record Timbangan)';
-            $xmlSap = $this->generateSapXmlString($selectedLogs);
+            $subtitle = 'Export Rekap XML Standar Perusahaan (Terminal ADO Rowset - ' . count($selectedLogs) . ' Record)';
             $xmlAdo = $this->buildAdoXmlString($selectedLogs);
+            $xmlSap = $this->generateSapXmlString($selectedLogs);
         } elseif ($id === 'sent' || $id === 'logsap') {
             $records = TransaksiTimbangan::with('unitPks')->where('status_sap', 'Sent')->latest()->get();
             $selectedLogs = $records->toArray();
-            $subtitle = 'Export Rekap XML (Gabungan Audit Log SAP - ' . count($selectedLogs) . ' Record Terverifikasi)';
-            $xmlSap = $this->generateSapXmlString($selectedLogs);
+            $subtitle = 'Export Rekap XML Standar Perusahaan (Audit Log Terverifikasi - ' . count($selectedLogs) . ' Record)';
             $xmlAdo = $this->buildAdoXmlString($selectedLogs);
+            $xmlSap = $this->generateSapXmlString($selectedLogs);
         } else {
             $transaksi = TransaksiTimbangan::with('unitPks')->find($id);
             if (!$transaksi) {
@@ -218,9 +217,9 @@ class BridgeController extends Controller
             }
             $log = $transaksi->toArray();
             $selectedLogs = [$log];
-            $subtitle = "Preview XML Auto-Generated (Per-Data) - Nota: {$transaksi->nota_no} ({$transaksi->no_plat}) - Status XML: " . ($transaksi->xml_status ?? 'Generated');
-            $xmlSap = $this->generateSapXmlString($log);
+            $subtitle = "Preview XML Standar Perusahaan (Terminal Config) - Nota: {$transaksi->nota_no} ({$transaksi->no_plat})";
             $xmlAdo = $this->buildAdoXmlString([$log]);
+            $xmlSap = $this->generateSapXmlString($log);
         }
 
         return response()->json([
@@ -228,8 +227,9 @@ class BridgeController extends Controller
             'log'           => count($selectedLogs) == 1 ? $selectedLogs[0] : null,
             'total_records' => count($selectedLogs),
             'subtitle'      => $subtitle,
-            'xml_sap'       => $xmlSap,
+            'xml_standard'  => $xmlAdo, // Standar Resmi Perusahaan
             'xml_ado'       => $xmlAdo,
+            'xml_sap'       => $xmlSap,
         ]);
     }
 
@@ -242,18 +242,18 @@ class BridgeController extends Controller
 
     public function generateXml($id = 'all')
     {
-        $filename = 'SAP_Weighbridge_Table_Config_' . date('Ymd_His') . '.xml';
+        $filename = 'Terminal_Config_' . date('Ymd_His') . '.xml';
 
         if ($id === 'sent' || $id === 'logsap') {
             $records = TransaksiTimbangan::with('unitPks')->where('status_sap', 'Sent')->latest()->get();
             $logsToExport = $records->toArray();
-            $filename = 'SAP_AuditLog_Table_Config_' . date('Ymd_His') . '.xml';
+            $filename = 'Terminal_Sent_Audit_' . date('Ymd_His') . '.xml';
         } elseif ($id && $id !== 'all' && $id !== 'table') {
             $transaksi = TransaksiTimbangan::with('unitPks')->find($id);
             if ($transaksi) {
                 $log = $transaksi->toArray();
-                $filename = 'SAP_Weighbridge_Config_' . ($transaksi->nota_no ?? $id) . '.xml';
-                $xmlString = $this->generateSapXmlString($log);
+                $filename = 'Terminal_' . ($transaksi->nota_no ?? $id) . '.xml';
+                $xmlString = $this->buildAdoXmlString([$log]);
                 return response($xmlString, 200)
                     ->header('Content-Type', 'text/xml')
                     ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
@@ -264,7 +264,7 @@ class BridgeController extends Controller
             $logsToExport = $records->toArray();
         }
 
-        $xmlString = $this->generateSapXmlString($logsToExport);
+        $xmlString = $this->buildAdoXmlString($logsToExport);
 
         return response($xmlString, 200)
             ->header('Content-Type', 'text/xml')
@@ -386,9 +386,9 @@ class BridgeController extends Controller
             ['name' => 'TRM_PROG_MAX', 'num' => 16, 'type' => 'int', 'len' => 4, 'fixed' => 'true'],
             ['name' => 'TRM_PROG_VAL', 'num' => 17, 'type' => 'int', 'len' => 4, 'fixed' => 'true'],
             ['name' => 'TRM_PROG', 'num' => 18, 'type' => 'int', 'len' => 4, 'fixed' => 'true'],
-            ['name' => 'TRM_START', 'num' => 19, 'type' => 'dateTime', 'dbtype' => 'timestamp', 'len' => 16, 'fixed' => 'true'],
-            ['name' => 'TRM_END', 'num' => 20, 'type' => 'dateTime', 'dbtype' => 'timestamp', 'len' => 16, 'fixed' => 'true'],
-            ['name' => 'TRM_LAST_PROC', 'num' => 21, 'type' => 'dateTime', 'dbtype' => 'timestamp', 'len' => 16, 'fixed' => 'true'],
+            ['name' => 'TRM_START', 'num' => 19, 'type' => 'dateTime', 'dbtype' => 'timestamp', 'len' => 16, 'scale' => 0, 'fixed' => 'true'],
+            ['name' => 'TRM_END', 'num' => 20, 'type' => 'dateTime', 'dbtype' => 'timestamp', 'len' => 16, 'scale' => 0, 'fixed' => 'true'],
+            ['name' => 'TRM_LAST_PROC', 'num' => 21, 'type' => 'dateTime', 'dbtype' => 'timestamp', 'len' => 16, 'scale' => 0, 'fixed' => 'true'],
         ];
 
         foreach ($columns as $col) {
@@ -404,6 +404,9 @@ class BridgeController extends Controller
                 $datatype->setAttribute('rs:dbtype', $col['dbtype']);
             }
             $datatype->setAttribute('dt:maxLength', $col['len']);
+            if (isset($col['scale'])) {
+                $datatype->setAttribute('rs:scale', (string) $col['scale']);
+            }
             $datatype->setAttribute('rs:precision', '0');
             if (isset($col['fixed'])) {
                 $datatype->setAttribute('rs:fixedlength', $col['fixed']);
@@ -422,33 +425,51 @@ class BridgeController extends Controller
         $rsData = $dom->createElement('rs:data');
         $rsInsert = $dom->createElement('rs:insert');
 
-        foreach ($logs as $log) {
+        foreach ($logs as $idx => $log) {
             $zRow = $dom->createElement('z:row');
 
-            $host = $log['vpn_ip'] ?? '10.14.2.10';
+            $pksName = $log['pks_loc'] ?? ($log['unit_pks']['nama_unit'] ?? 'PKS Pabatu');
+            $host = $log['vpn_ip'] ?? ($log['unit_pks']['ip_vpn'] ?? '10.14.2.10');
             $port = '3306';
+            $cleanName = str_replace('PKS ', '', $pksName);
+            $trmCode = $log['nota_no'] ?? ('N005-EP' . str_pad($idx + 13, 2, '0', STR_PAD_LEFT) . '-1');
+            $trmInit = '3F' . (14 + ($idx % 5)) . '-' . (($idx % 2) + 1);
+            $desc = 'Pb. PPKR ' . $cleanName;
+            if (($idx % 2) == 1) {
+                $desc .= ' (vpn)';
+            }
+
+            $statusVpn = $log['status_vpn'] ?? ($log['unit_pks']['status_vpn'] ?? 'Online');
+            $isVpnOk = in_array(strtolower($statusVpn), ['online', 'connected']);
+
+            $statusSap = $log['status_sap'] ?? 'Pending';
+            $isSent = strtoupper($statusSap) === 'SENT';
+
+            $trmStart = !empty($log['jam_masuk']) && strlen($log['jam_masuk']) > 5 ? date('Y-m-d\TH:i:s', strtotime($log['jam_masuk'])) : (!empty($log['created_at']) ? date('Y-m-d\TH:i:s', strtotime($log['created_at'])) : date('Y-m-d\TH:i:s'));
+            $trmEnd = !empty($log['jam_keluar']) && strlen($log['jam_keluar']) > 5 ? date('Y-m-d\TH:i:s', strtotime($log['jam_keluar'])) : (!empty($log['updated_at']) ? date('Y-m-d\TH:i:s', strtotime($log['updated_at'])) : date('Y-m-d\TH:i:s'));
+            $trmLastProc = !empty($log['sap_sent_at']) ? date('Y-m-d\TH:i:s', strtotime($log['sap_sent_at'])) : date('Y-m-d\TH:i:s');
 
             $zRow->setAttribute('TRM_ID', "{$host}:{$port}");
             $zRow->setAttribute('TRM_USED', '1');
-            $zRow->setAttribute('TRM_CODE', $log['nota_no'] ?? 'N005-EP13-1');
-            $zRow->setAttribute('TRM_INIT', '3F14-1');
-            $zRow->setAttribute('TRM_DESC', $log['pks_loc'] ?? 'Pb. PPKR SLI');
+            $zRow->setAttribute('TRM_CODE', $trmCode);
+            $zRow->setAttribute('TRM_INIT', $trmInit);
+            $zRow->setAttribute('TRM_DESC', $desc);
             $zRow->setAttribute('TRM_HOST', $host);
             $zRow->setAttribute('TRM_PORT', $port);
-            $zRow->setAttribute('TRM_DB', 'pks_weighbridge_db');
-            $zRow->setAttribute('TRM_USER', 'uapp_ptpn4');
-            $zRow->setAttribute('TRM_PASS', 'enc_password_sap');
-            $zRow->setAttribute('TRM_STS_PING', ($log['status_vpn'] ?? '') == 'Connected' ? '4' : '0');
-            $zRow->setAttribute('TRM_STS_PROCESS', ($log['status_sap'] ?? '') == 'SENT' ? '1' : '0');
+            $zRow->setAttribute('TRM_DB', 'nama_database');
+            $zRow->setAttribute('TRM_USER', 'uapp');
+            $zRow->setAttribute('TRM_PASS', 'password_database');
+            $zRow->setAttribute('TRM_STS_PING', $isVpnOk ? '4' : '0');
+            $zRow->setAttribute('TRM_STS_PROCESS', $isSent ? '1' : '0');
             $zRow->setAttribute('TRM_STS_PRO_DB', '1');
-            $zRow->setAttribute('TRM_STS_PRO_FILE', '1');
-            $zRow->setAttribute('TRM_STS_PRO_FTP', '1');
-            $zRow->setAttribute('TRM_PROG_MAX', '100');
-            $zRow->setAttribute('TRM_PROG_VAL', '100');
-            $zRow->setAttribute('TRM_PROG', '1');
-            $zRow->setAttribute('TRM_START', date('Y-m-d\TH:i:s'));
-            $zRow->setAttribute('TRM_END', date('Y-m-d\TH:i:s'));
-            $zRow->setAttribute('TRM_LAST_PROC', date('Y-m-d\TH:i:s'));
+            $zRow->setAttribute('TRM_STS_PRO_FILE', '0');
+            $zRow->setAttribute('TRM_STS_PRO_FTP', '0');
+            $zRow->setAttribute('TRM_PROG_MAX', '0');
+            $zRow->setAttribute('TRM_PROG_VAL', '0');
+            $zRow->setAttribute('TRM_PROG', '0');
+            $zRow->setAttribute('TRM_START', $trmStart);
+            $zRow->setAttribute('TRM_END', $trmEnd);
+            $zRow->setAttribute('TRM_LAST_PROC', $trmLastProc);
 
             $rsInsert->appendChild($zRow);
         }
