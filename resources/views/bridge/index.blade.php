@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen Timbangan PKS & SAP Integration - PTPN 4</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-ptpn4.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -12,6 +13,9 @@
         .card-custom { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .badge-trouble { background-color: #dc3545; color: white; }
         .badge-ok { background-color: #198754; color: white; }
+        .navbar-brand-logo {
+            width: 36px; height: 36px; background: transparent; border: none; padding: 0; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -19,8 +23,11 @@
     <!-- Navbar -->
     <nav class="navbar navbar-dark navbar-ptpn mb-4 shadow-sm">
         <div class="container-fluid px-4">
-            <a class="navbar-link navbar-brand fw-bold text-white" href="#">
-                <i class="bi bi-truck me-2"></i> PTPN 4 REGIONAL - Sistem Monitoring Timbangan PKS & SAP XML
+            <a class="navbar-link navbar-brand fw-bold text-white d-flex align-items-center" href="#">
+                <span class="navbar-brand-logo">
+                    <img src="{{ asset('images/logo-ptpn4.png') }}" alt="Logo PTPN 4" style="height: 100%; width: 100%; object-fit: contain;">
+                </span>
+                PTPN 4 REGIONAL 3 - Sistem Monitoring Timbangan PKS & SAP XML
             </a>
             <span class="badge bg-light text-success fw-bold px-3 py-2">Mode: In-Memory / No DB</span>
         </div>
