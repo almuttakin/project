@@ -79,6 +79,105 @@ class BridgeController extends Controller
         return view('dashboard', compact('logs', 'labels', 'data', 'xmlStats', 'latestXmlStream', 'sentLogs', 'riwayatLogins', 'unitsList'));
     }
 
+    /**
+     * Dashboard Khusus Aktor: Kepala TI PTPN Kantor Pusat (Jakarta)
+     * Menampilkan metrik eksekutif tingkat holding: konsolidasi tonase, SLA gateway,
+     * tingkat keberhasilan integrasi SAP, matriks performa 12 PKS, dan audit trail holding.
+     */
+    public function pusatDashboard()
+    {
+        $logs = TransaksiTimbangan::with('unitPks')->latest()->get();
+
+        // 12 Unit PKS Terpantau di Regional III
+        $masterPks = [
+            ['nama' => 'PKS Pabatu', 'kode' => 'PBT', 'wilayah' => 'Distrik Serdang Bedagai', 'ip' => '10.14.2.10', 'lat' => 3.2505, 'lng' => 99.1234],
+            ['nama' => 'PKS Sawit Seberang', 'kode' => 'SSB', 'wilayah' => 'Distrik Langkat', 'ip' => '10.14.2.11', 'lat' => 3.7341, 'lng' => 98.2415],
+            ['nama' => 'PKS Bah Jambi', 'kode' => 'BJB', 'wilayah' => 'Distrik Simalungun', 'ip' => '10.14.2.12', 'lat' => 2.9732, 'lng' => 99.1123],
+            ['nama' => 'PKS Mayang', 'kode' => 'MYG', 'wilayah' => 'Distrik Simalungun', 'ip' => '10.14.2.13', 'lat' => 2.9102, 'lng' => 99.2014],
+            ['nama' => 'PKS Tanah Hitam', 'kode' => 'THM', 'wilayah' => 'Distrik Batubara', 'ip' => '10.14.2.14', 'lat' => 3.1256, 'lng' => 99.4521],
+            ['nama' => 'PKS Sei Galuh', 'kode' => 'SGH', 'wilayah' => 'Distrik Kampar (Riau)', 'ip' => '10.14.2.15', 'lat' => 0.5833, 'lng' => 101.3167],
+            ['nama' => 'PKS Sei Pagar', 'kode' => 'SPG', 'wilayah' => 'Distrik Kampar (Riau)', 'ip' => '10.14.2.16', 'lat' => 0.2854, 'lng' => 101.3789],
+            ['nama' => 'PKS Tandun', 'kode' => 'TDN', 'wilayah' => 'Distrik Rokan Hulu (Riau)', 'ip' => '10.14.2.17', 'lat' => 0.6521, 'lng' => 100.5891],
+            ['nama' => 'PKS Lubuk Dalam', 'kode' => 'LBD', 'wilayah' => 'Distrik Siak (Riau)', 'ip' => '10.14.2.18', 'lat' => 0.6845, 'lng' => 101.7823],
+            ['nama' => 'PKS Terantam', 'kode' => 'TRT', 'wilayah' => 'Distrik Kampar (Riau)', 'ip' => '10.14.2.19', 'lat' => 0.4512, 'lng' => 100.9124],
+            ['nama' => 'PKS Tanah Putih', 'kode' => 'TPH', 'wilayah' => 'Distrik Rokan Hilir (Riau)', 'ip' => '10.14.2.20', 'lat' => 1.4876, 'lng' => 101.0543],
+            ['nama' => 'PKS Sei Tapung', 'kode' => 'STP', 'wilayah' => 'Distrik Rokan Hulu (Riau)', 'ip' => '10.14.2.21', 'lat' => 0.7812, 'lng' => 100.6421],
+        ];
+
+        // Total metrik konsolidasi holding
+        $totalGrossKg = $logs->sum('gross');
+        $totalTarraKg = $logs->sum('tarra');
+        $totalNettoKg = $logs->sum('netto');
+        $totalTrx = $logs->count();
+
+        $totalSent = $logs->filter(fn($i) => strtoupper($i->status_sap ?? '') === 'SENT')->count();
+        $totalPending = $logs->filter(fn($i) => strtoupper($i->status_sap ?? 'PENDING') === 'PENDING')->count();
+        $sapSuccessRate = $totalTrx > 0 ? round(($totalSent / $totalTrx) * 100, 1) : 0;
+
+        $vpnOnlineCount = $logs->filter(fn($i) => in_array(strtolower($i->status_vpn ?? ''), ['online', 'connected']))->count();
+        $networkSla = $totalTrx > 0 ? round(($vpnOnlineCount / $totalTrx) * 100, 1) : 99.8;
+
+        // Metrik rekapitulasi per unit PKS
+        $pksSummary = [];
+        $chartLabels = [];
+        $chartTonase = [];
+        $chartSapSent = [];
+        $chartSapPending = [];
+
+        foreach ($masterPks as $p) {
+            $pksLogs = $logs->filter(fn($i) => ($i->pks_loc ?? '') === $p['nama']);
+            $countTrx = $pksLogs->count();
+            $nettoKg = $pksLogs->sum('netto');
+            $sentCount = $pksLogs->filter(fn($i) => strtoupper($i->status_sap ?? '') === 'SENT')->count();
+            $pendingCount = $pksLogs->filter(fn($i) => strtoupper($i->status_sap ?? '') !== 'SENT')->count();
+            
+            $statusVpn = $pksLogs->first()?->status_vpn ?? 'Connected';
+            $lastSync = $pksLogs->whereNotNull('sap_sent_at')->first()?->sap_sent_at ?? ($pksLogs->first()?->created_at ?? 'Hari ini');
+
+            $pksSummary[] = [
+                'nama' => $p['nama'],
+                'kode' => $p['kode'],
+                'wilayah' => $p['wilayah'],
+                'ip' => $p['ip'],
+                'total_trx' => $countTrx,
+                'netto_kg' => $nettoKg,
+                'netto_ton' => round($nettoKg / 1000, 2),
+                'sent_count' => $sentCount,
+                'pending_count' => $pendingCount,
+                'sync_percent' => $countTrx > 0 ? round(($sentCount / $countTrx) * 100, 1) : 100,
+                'status_vpn' => $statusVpn,
+                'last_sync' => $lastSync,
+                'lat' => $p['lat'],
+                'lng' => $p['lng']
+            ];
+
+            $chartLabels[] = str_replace('PKS ', '', $p['nama']);
+            $chartTonase[] = round($nettoKg / 1000, 2);
+            $chartSapSent[] = $sentCount;
+            $chartSapPending[] = $pendingCount;
+        }
+
+        // Audit Trail Transaksi Terverifikasi SAP Holding (15 data terbaru)
+        $sapVerifiedLedger = $logs->filter(fn($i) => strtoupper($i->status_sap ?? '') === 'SENT')->take(15);
+
+        return view('dashboard_pusat', compact(
+            'totalGrossKg',
+            'totalTarraKg',
+            'totalNettoKg',
+            'totalTrx',
+            'totalSent',
+            'totalPending',
+            'sapSuccessRate',
+            'networkSla',
+            'pksSummary',
+            'chartLabels',
+            'chartTonase',
+            'chartSapSent',
+            'chartSapPending',
+            'sapVerifiedLedger'
+        ));
+    }
+
     public function store(Request $request)
     {
         $gross = (float) $request->gross;

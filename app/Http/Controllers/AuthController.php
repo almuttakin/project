@@ -12,8 +12,12 @@ class AuthController extends Controller
      */
     public function showLoginForm()
     {
-        // Jika sudah login, langsung alihkan ke Dashboard
+        // Jika sudah login, langsung alihkan ke Dashboard sesuai peran
         if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->role === 'Kepala TI Pusat' || $user->username === 'kepala.ti.pusat') {
+                return redirect()->route('pusat.dashboard');
+            }
             return redirect()->route('bridge.index');
         }
 
@@ -57,6 +61,10 @@ class AuthController extends Controller
                 $request->session()->put('login_riwayat_id', $riwayat->id);
             } catch (\Throwable $e) {
                 // Abaikan jika pencatatan riwayat terkendala
+            }
+
+            if ($user->role === 'Kepala TI Pusat' || $user->username === 'kepala.ti.pusat') {
+                return redirect()->intended(route('pusat.dashboard'))->with('success', 'Selamat datang di Executive Holding Dashboard, ' . ($user->name ?? 'Kepala TI Pusat') . '!');
             }
 
             return redirect()->intended(route('bridge.index'))->with('success', 'Selamat datang di Dashboard AutoXML Gateway, ' . ($user->name ?? 'Admin') . '!');

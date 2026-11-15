@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     // Dashboard & Monitoring
     Route::get('/dashboard', [BridgeController::class, 'index'])->name('bridge.index');
     Route::get('/dashboard/home', [BridgeController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/pusat', [BridgeController::class, 'pusatDashboard'])->name('pusat.dashboard');
 
     // Transaksi & XML Engine / SAP Integration
     Route::post('/store', [BridgeController::class, 'store'])->name('bridge.store');

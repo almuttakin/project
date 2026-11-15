@@ -317,26 +317,54 @@
                 </button>
             </form>
 
+            <!-- Kartu Pilihan Akses Cepat 2 Aktor -->
+            <div class="mt-4 pt-3 border-top">
+                <div class="text-muted small fw-semibold mb-2 text-center" style="font-size: 0.75rem;">
+                    <i class="bi bi-people-fill me-1"></i>PILIHAN LOGIN 2 AKTOR SISTEM (KLIK UNTUK ISI OTOMATIS):
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-success text-start d-flex align-items-center justify-content-between p-2 rounded-3" onclick="fillCredential('admin.ti.regional3', 'admin123')">
+                        <div>
+                            <div class="fw-bold" style="font-size: 0.8rem;"><i class="bi bi-person-badge me-1"></i> 1. Admin TI Regional 3</div>
+                            <div class="text-muted" style="font-size: 0.7rem;">Operasional Timbangan & XML Regional</div>
+                        </div>
+                        <span class="badge bg-success-subtle text-success small">Pilih</span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-warning text-start d-flex align-items-center justify-content-between p-2 rounded-3" onclick="fillCredential('kepala.ti.pusat', 'pusat123')">
+                        <div>
+                            <div class="fw-bold text-dark" style="font-size: 0.8rem;"><i class="bi bi-building me-1 text-warning"></i> 2. Kepala TI Kantor Pusat (Jakarta)</div>
+                            <div class="text-muted" style="font-size: 0.7rem;">Executive Holding Dashboard & SLA</div>
+                        </div>
+                        <span class="badge bg-warning-subtle text-warning small">Pilih</span>
+                    </button>
+                </div>
+            </div>
+
             <!-- Badge Khusus Admin TI di bawah Form -->
             <div class="text-center mt-3 pt-2">
                 <span class="login-badge-info">
                     <i class="bi bi-shield-check text-success"></i>
-                    <span>Khusus untuk Admin/Petugas TI PTPN IV Regional III</span>
+                    <span>Sistem Terintegrasi AutoXML &bull; 2 Level Aktor</span>
                 </span>
             </div>
         </div>
 
         <!-- Teks Kecil Paling Bawah -->
         <p class="login-bottom-text">
-            Operator Timbangan PKS? <a href="mailto:mhdnuralmuttakin@gmail.com" class="contact-admin-link">Hubungi Admin TI</a> untuk akses akun.
+            Sistem Informasi Penimbangan TBS &bull; PTPN IV PalmCo Holding &bull; Pekanbaru &mdash; Jakarta
         </p>
     </div>
 
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script Toggle Password Visibility -->
+    <!-- Script Toggle Password Visibility & Fill Credential -->
     <script>
+        function fillCredential(u, p) {
+            document.getElementById('username').value = u;
+            document.getElementById('password').value = p;
+        }
+
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
             const icon = document.getElementById('togglePasswordIcon');

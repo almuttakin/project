@@ -716,6 +716,10 @@
             <!-- Navigasi Publik & Logout -->
             <div class="nav-section-title mt-3">Akses & Sesi</div>
             <div class="nav flex-column">
+                <a href="{{ route('pusat.dashboard') }}" class="nav-link text-decoration-none" style="background: rgba(207, 161, 68, 0.15); color: #fde68a; border: 1px dashed rgba(207, 161, 68, 0.4);">
+                    <i class="bi bi-building" style="color: #fde68a;"></i>
+                    <span class="link-text">Dashboard Kepala TI Pusat</span>
+                </a>
                 <a href="{{ route('home') }}" class="nav-link text-decoration-none">
                     <i class="bi bi-house-door"></i>
                     <span class="link-text">Halaman Depan (Home)</span>
@@ -755,6 +759,10 @@
                 </div>
             </div>
             <div class="d-flex align-items-center gap-2 gap-sm-3">
+                <a href="{{ route('pusat.dashboard') }}" class="btn btn-sm btn-outline-success fw-bold d-flex align-items-center gap-1 shadow-sm px-2 px-md-3" style="border-radius: 20px; font-size: 0.78rem; border-color: var(--forest-500); background-color: var(--forest-50);" title="Buka Executive Monitoring Dashboard Kepala TI Kantor Pusat">
+                    <i class="bi bi-building text-warning"></i> <span class="d-none d-md-inline">Executive Dashboard (Kepala TI Pusat)</span>
+                </a>
+
                 <!-- Notification Dropdown -->
                 <div class="dropdown">
                     <button class="btn btn-light rounded-circle shadow-sm position-relative d-flex align-items-center justify-content-center" id="notifDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false" style="width: 42px; height: 42px; color: var(--forest-700); border: 1.5px solid var(--forest-200);" title="Pemberitahuan Sistem">

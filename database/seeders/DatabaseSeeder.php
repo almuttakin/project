@@ -19,35 +19,36 @@ class DatabaseSeeder extends Seeder
         // 2. Seed Transaksi Timbangan & Log SAP
         $this->call(TransaksiTimbanganSeeder::class);
 
-        // 3. Seed Akun Admin Contoh (sesuai spesifikasi Task 3)
+        // 3. Seed Aktor 1: Administrator TI Regional III
         User::updateOrCreate(
-            ['email' => 'admin.ti.regional3@ptpn4.co.id'],
+            ['username' => 'admin.ti.regional3'],
             [
                 'name'     => 'Administrator TI Regional III',
-                'username' => 'admin.ti.regional3',
+                'email'    => 'admin.ti.regional3@ptpn4.co.id',
                 'password' => Hash::make('admin123'),
-                'role'     => 'Admin',
+                'role'     => 'Admin Regional',
             ]
         );
 
-        // 4. Seed Pengguna Default Tambahan (Operator & Admin IT Pusat)
+        // 4. Seed Aktor 2: Kepala TI PTPN Kantor Pusat (Jakarta)
         User::updateOrCreate(
-            ['email' => 'operator@ptpn4.co.id'],
+            ['username' => 'kepala.ti.pusat'],
             [
-                'name'     => 'Operator Timbangan PTPN 4',
-                'username' => 'operator',
-                'password' => Hash::make('password123'),
-                'role'     => 'Operator',
+                'name'     => 'Kepala Divisi TI Kantor Pusat Jakarta',
+                'email'    => 'kepala.ti@ptpn.co.id',
+                'password' => Hash::make('pusat123'),
+                'role'     => 'Kepala TI Pusat',
             ]
         );
 
+        // Fallback user admin pusat alias
         User::updateOrCreate(
             ['email' => 'admin@ptpn4.co.id'],
             [
                 'name'     => 'Admin IT Kantor Pusat',
                 'username' => 'admin',
                 'password' => Hash::make('password123'),
-                'role'     => 'Admin',
+                'role'     => 'Kepala TI Pusat',
             ]
         );
     }
