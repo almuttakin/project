@@ -3,7 +3,7 @@
 Script Generator Laporan Final Tugas Akhir Lengkap (.docx)
 Judul Resmi: AUTO GENERATE CONFIG XML PADA TIMBANGAN PTPN 4 REGIONAL 3 UNTUK MELEMPAR DATA KE SISTEM SAP KANTOR PUSAT
 Penulis: Muhammad Nur Almuttakin
-Aktor: 2 Aktor Sistem (Admin TI Regional 3 & Kepala TI PTPN Kantor Pusat Jakarta)
+Sesuai Dokumen Analisis Sistem (BAB III & BAB IV) Lengkap dengan Format Tabel Resmi & 2 Aktor Sistem.
 """
 
 import os
@@ -11,19 +11,19 @@ import sys
 import docx
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ALIGN_VERTICAL
-from docx.oxml import OxmlElement, parse_xml
-from docx.oxml.ns import nsdecls, qn
+from docx.enum.table import WD_TABLE_ALIGNMENT
+from docx.oxml import parse_xml
+from docx.oxml.ns import nsdecls
 
 def create_full_report():
     doc = docx.Document()
 
-    # Pengaturan Margin Halaman (Standar Skripsi/Tugas Akhir: Kiri 4cm, Atas 3cm, Kanan 3cm, Bawah 3cm)
+    # Margin Standar Skripsi/Tugas Akhir: Kiri 4cm (1.57 in), Atas 3cm (1.18 in), Kanan 3cm (1.18 in), Bawah 3cm (1.18 in)
     for section in doc.sections:
-        section.top_margin = Inches(1.18)      # 3.0 cm
-        section.bottom_margin = Inches(1.18)   # 3.0 cm
-        section.left_margin = Inches(1.57)     # 4.0 cm
-        section.right_margin = Inches(1.18)    # 3.0 cm
+        section.top_margin = Inches(1.18)
+        section.bottom_margin = Inches(1.18)
+        section.left_margin = Inches(1.57)
+        section.right_margin = Inches(1.18)
 
     # Style Dasar
     normal_style = doc.styles['Normal']
@@ -41,13 +41,11 @@ def create_full_report():
         p.paragraph_format.line_spacing = 1.5
         if indent > 0:
             p.paragraph_format.first_line_indent = Inches(indent)
-            
         if bold_prefix:
             r_bold = p.add_run(bold_prefix)
             r_bold.bold = True
             r_bold.font.name = 'Times New Roman'
             r_bold.font.size = Pt(12)
-            
         run = p.add_run(text)
         run.italic = italic
         run.font.name = 'Times New Roman'
@@ -80,7 +78,7 @@ def create_full_report():
         run.bold = True
         run.font.name = 'Times New Roman'
         run.font.size = Pt(14)
-        run.font.color.rgb = RGBColor(15, 81, 50) # Forest Green
+        run.font.color.rgb = RGBColor(15, 81, 50)
         return p
 
     def add_h2(text):
@@ -257,7 +255,7 @@ def create_full_report():
 
     add_h2("1.4 Rumusan Masalah")
     add_p("Berdasarkan identifikasi dan batasan masalah di atas, maka rumusan masalah penelitian ini dirumuskan sebagai berikut:")
-    add_bullet("Bagaimana merancang dan membangun sistem AutoXML Gateway yang mampu menghitung nilai netto secara otomatis dan mengonversi data penimbangan TBS dari 12 unit PKS ke format XML ADO Rowset standar perusahaan?", "1. ")
+    add_bullet("Bagaimana merancang dan membangun sistem Auto Generate Config XML Pada Timbangan PTPN 4 Regional 3 yang mampu menghitung nilai netto secara otomatis dan mengonversi data penimbangan TBS ke format XML ADO Rowset standar perusahaan?", "1. ")
     add_bullet("Bagaimana merancang arsitektur sistem berbasis 2 aktor (Admin TI Regional 3 dan Kepala TI Kantor Pusat Jakarta) agar memberikan pemisahan wewenang operasional dan pengawasan strategis holding yang efektif?", "2. ")
     add_bullet("Bagaimana membangun antarmuka Executive Monitoring Dashboard bagi Kepala TI Kantor Pusat Jakarta yang menyajikan konsolidasi tonase, SLA gateway, dan status sinkronisasi SAP holding secara real-time?", "3. ")
     add_bullet("Bagaimana hasil pengujian fungsional sistem menggunakan metode Black Box Testing terhadap seluruh modul yang digunakan oleh kedua aktor sistem?", "4. ")
@@ -281,7 +279,7 @@ def create_full_report():
     add_bullet("Berisi latar belakang masalah, identifikasi masalah, batasan masalah, rumusan masalah, tujuan penelitian, manfaat penelitian, dan sistematika penulisan.", "BAB I PENDAHULUAN: ")
     add_bullet("Memuat teori-teori pendukung, penelitian terdahulu yang relevan, konsep sistem informasi, sistem basis data, UML, bahasa pemrograman, dan framework/tools yang digunakan.", "BAB II TINJAUAN PUSTAKA: ")
     add_bullet("Menjelaskan lokasi/objek penelitian, metode pengumpulan data, tahapan pengembangan sistem metode Waterfall, dan spesifikasi kebutuhan perangkat keras serta perangkat lunak.", "BAB III METODOLOGI PENELITIAN: ")
-    add_bullet("Menguraikan analisis sistem berjalan, analisis kebutuhan fungsional & non-fungsional, perancangan Use Case Diagram HANYA DENGAN 2 AKTOR (Admin TI Regional 3 dan Kepala TI Kantor Pusat Jakarta), skenario use case, activity diagram, sequence diagram, class diagram, component diagram, ERD database, dan rancangan wireframe antarmuka.", "BAB IV ANALISIS DAN PERANCANGAN SISTEM: ")
+    add_bullet("Menguraikan analisis sistem berjalan, analisis kebutuhan bisnis, peran pengguna 2 aktor, analisis kebutuhan fungsional & non-fungsional, perancangan Use Case Diagram HANYA DENGAN 2 AKTOR, skenario use case, activity diagram, sequence diagram, class diagram, component diagram, ERD database, dan rancangan wireframe antarmuka.", "BAB IV ANALISIS DAN PERANCANGAN SISTEM: ")
     add_bullet("Menjelaskan implementasi basis data, implementasi kode program controller dan view, screenshot antarmuka sistem kedua aktor, serta hasil pengujian Black Box Testing.", "BAB V IMPLEMENTASI DAN PENGUJIAN: ")
     add_bullet("Menyajikan kesimpulan menyeluruh dari penelitian yang telah dilakukan serta saran-saran konstruktif untuk pengembangan sistem di masa mendatang.", "BAB VI PENUTUP: ")
 
@@ -353,210 +351,443 @@ def create_full_report():
     add_bullet("Mempelajari berkas log transaksi historis, berkas sampel XML resmi (Terminal_-_backup_20260708.xml), dokumentasi skema database weighbridge lokal, dan buku petunjuk teknis antarmuka SAP BAPI.", "3. Studi Dokumentasi (Documentation Study): ")
 
     add_h2("3.3 Metode Pengembangan Sistem (Waterfall SDLC)")
-    add_p("Pengembangan perangkat lunak menerapkan System Development Life Cycle (SDLC) model Waterfall (Classic Life Cycle) menurut Ian Sommerville dan Roger S. Pressman. Model ini dipilih karena karakteristik kebutuhan sistem integrasi enterprise ini memiliki spesifikasi teknis yang pasti, berurutan, dan menuntut standarisasi ketat:")
-    add_bullet("Tahap inisiasi proyek melalui dialog dengan pemangku kepentingan untuk mengidentifikasi domain permasalahan, batasan 2 aktor sistem, dan spesifikasi format XML ADO Rowset yang disepakati.", "1. Communication (Analisis Kebutuhan): ")
-    add_bullet("Menyusun estimasi penjadwalan kerja, pemetaan 12 unit PKS, alokasi infrastruktur IP VPN, dan manajemen risiko keterlambatan data.", "2. Planning (Perencanaan): ")
-    add_bullet("Menerjemahkan kebutuhan bisnis ke dalam diagram pemodelan berorientasi objek (Use Case 2 Aktor, Skenario, Activity, Sequence, Class, Component Diagram), skema ERD database, dan rancangan wireframe antarmuka.", "3. Modeling (Perancangan): ")
-    add_bullet("Mengimplementasikan rancangan ke dalam kode program web Laravel 11, pembuatan pustaka pembangun XML DOMDocument, pembuatan seeder 2 aktor, serta pengujian Black Box Testing.", "4. Construction (Pengodean & Pengujian): ")
-    add_bullet("Memasang aplikasi pada server gateway lokal (Laragon/Debian VM), evaluasi umpan balik pengguna, dan serah terima sistem kepada penguji/penilai sidang tugas akhir.", "5. Deployment & Maintenance: ")
-
-    add_h2("3.4 Analisis Kebutuhan Sistem")
-    add_p("Untuk menjamin kelancaran operasional sistem AutoXML Gateway, dirumuskan spesifikasi minimum perangkat keras dan perangkat lunak yang dibutuhkan:")
-    
-    headers_hw = ["Kategori Komponen", "Spesifikasi Perangkat Keras Minimum", "Rekomendasi Lingkungan Produksi"]
-    widths_hw = [1.8, 2.3, 2.4]
-    data_hw = [
-        ["Processor (CPU)", "Intel Core i3 Gen 8 / AMD Ryzen 3 (Quad Core 2.4 GHz)", "Intel Core i7 / Xeon E-Series (8 Cores 3.2 GHz)"],
-        ["Memori (RAM)", "4 GB DDR4", "16 GB DDR4 ECC RAM"],
-        ["Penyimpanan (Storage)", "SSD 128 GB SATA III", "SSD NVMe 512 GB Enterprise (RAID 1)"],
-        ["Kartu Jaringan (NIC)", "Gigabit Ethernet Controller 100/1000 Mbps", "Dual Redundant Gigabit Ethernet Controller"],
-        ["Konektivitas Jaringan", "Koneksi VPN / IP Intranet Dedicated 10 Mbps", "Leased Line Dedicated IP Intranet 100 Mbps (SLA 99.8%)"],
-        ["Monitor & Tampilan", "Resolusi layar 1366 x 768 piksel", "Full HD 1920 x 1080 piksel (Dual Monitor Eksekutif)"]
-    ]
-    create_styled_table(headers_hw, data_hw, widths_hw, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.LEFT])
-
-    headers_sw = ["Komponen Perangkat Lunak", "Spesifikasi yang Digunakan", "Fungsi / Peranan dalam Sistem"]
-    widths_sw = [2.0, 2.0, 2.5]
-    data_sw = [
-        ["Sistem Operasi", "Windows 10/11 Pro 64-bit / Linux Debian 12", "Lingkungan eksekusi host dan gateway transmisi data"],
-        ["Web Server", "Apache 2.4 / Nginx Engine", "Melayani permintaan HTTP/HTTPS antarmuka web"],
-        ["Bahasa Pemrograman", "PHP versi 8.2+ 64-bit", "Pemrosesan logika bisnis, controller, dan engine XML"],
-        ["Database Server", "MySQL Community Server 8.0+", "Menyimpan data transaksi, master PKS, dan riwayat login"],
-        ["Framework Web", "Laravel Framework 11.x", "Penyedia struktur MVC, ORM Eloquent, dan keamanan sesi"],
-        ["Pustaka Pemetaan", "Leaflet JS versi 1.9.4", "Merender peta spasial topologi 12 PKS dan hub Jakarta"],
-        ["Pustaka Visualisasi", "Chart.js versi 4.x", "Merender visualisasi tonase dan komposisi status SAP"],
-        ["Web Browser", "Google Chrome 120+ / MS Edge", "Aplikasi peramban pengguna untuk mengakses sistem"]
-    ]
-    create_styled_table(headers_sw, data_sw, widths_sw, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.LEFT])
+    add_p("Pengembangan perangkat lunak menerapkan System Development Life Cycle (SDLC) model Waterfall (Classic Life Cycle) menurut Roger S. Pressman (2015). Model ini dipilih karena karakteristik kebutuhan sistem integrasi enterprise ini memiliki spesifikasi teknis yang pasti, berurutan, dan menuntut standarisasi ketat:")
+    add_bullet("Tahap inisiasi proyek melalui observasi dan dialog dengan pemangku kepentingan untuk mengidentifikasi domain permasalahan, batasan 2 aktor sistem, dan spesifikasi format XML ADO Rowset yang disepakati.", "1. Communication (Inisiasi & Analisis Kebutuhan): ")
+    add_bullet("Menyusun estimasi penjadwalan kerja, pemetaan 12 unit PKS, alokasi infrastruktur IP VPN, dan manajemen risiko keterlambatan data.", "2. Planning (Estimasi & Penjadwalan): ")
+    add_bullet("Menerjemahkan kebutuhan bisnis ke dalam diagram pemodelan berorientasi objek (Use Case 2 Aktor, Skenario, Activity, Sequence, Class, Component Diagram), skema ERD database, dan rancangan wireframe antarmuka.", "3. Modeling (Analisis & Desain Sistem): ")
+    add_bullet("Mengimplementasikan rancangan ke dalam kode program web Laravel 11, pembuatan pustaka pembangun XML DOMDocument, pembuatan seeder 2 aktor, serta pengujian Black Box Testing.", "4. Construction (Coding & Testing): ")
+    add_bullet("Memasang aplikasi pada server gateway lokal (Laragon/Debian VM), evaluasi umpan balik pengguna, dan serah terima sistem kepada penguji/penilai sidang tugas akhir.", "5. Deployment (Delivery & Evaluasi): ")
 
     doc.add_page_break()
 
     # ================= BAB IV: ANALISIS DAN PERANCANGAN SISTEM =================
     add_h1("BAB IV\nANALISIS DAN PERANCANGAN SISTEM")
     
-    add_h2("4.1 Analisis Sistem Berjalan")
-    add_p("Pada sistem berjalan, operator jembatan timbang di unit PKS mencatat bobot bruto saat truk tiba dan bobot tarra saat truk keluar. Data tersebut tersimpan pada komputer lokal di pos timbangan. Petugas administrasi lokal setiap sore hari melakukan ekspor berkas data ke dalam format berkas spreadsheet (.xls) dan mengirimkannya melalui surat elektronik (email) atau aplikasi perpesanan instan menuju tim TI kantor regional di Pekanbaru. Tim regional kemudian mengumpulkan berkas-berkas dari 12 unit PKS, melakukan validasi manual, lalu mengunggahnya ke portal data SAP.")
-    add_p("Kelemahan nyata dari alur sistem berjalan ini adalah:")
-    add_bullet("Keterlambatan konsolidasi tonase mencapai 12 hingga 24 jam setelah penimbangan berlangsung.", "1. Tidak Real-Time: ")
-    add_bullet("Tingginya potensi salah ketik angka berat timbangan pada proses pemindahan berkas manual.", "2. Rawan Human Error: ")
-    add_bullet("Kepala Divisi TI di Jakarta tidak memiliki akses pemantauan seketika atas kendala jaringan atau ketertunggakan pengiriman data dari unit pabrik.", "3. Minimnya Pengawasan Holding: ")
+    add_h2("4.1 Analisis Sistem")
+    add_p("Pada tahap ini membahas tentang tahapan-tahapan di dalam metode penelitian yang digunakan untuk mengumpulkan data-data yang digunakan dalam proses pembuatan sistem \"Auto Generate Config XML Pada Timbangan PTPN 4 Regional 3 Untuk Melempar Data Ke Sistem SAP Kantor Pusat\" serta menerapkan System Development Life Cycle (SDLC) Waterfall.")
+    add_p("Model ini berguna untuk menggambarkan tahapan-tahapan dalam perancangan sistem serta langkah-langkah yang harus dikerjakan dari setiap tahapan. Tahapan-tahapan yang dilakukan disesuaikan dengan model Waterfall menurut Pressman (2015) yang terdiri dari tahap communication, planning, modeling, construction, dan deployment pada PTPN IV Regional 3.")
+    add_p("Pada tahap ini yang dilakukan dimulai dari tahap communication yang dilakukan untuk mendapatkan data dan informasi yang dibutuhkan yang diperoleh dari observasi dan wawancara pada Kerja Praktek sebelumnya, serta dari berbagai sumber literatur untuk mendapatkan informasi yang lengkap dan berguna dalam pembuatan sistem ini. Pada tahap ini dibagi menjadi beberapa tahapan analisis, antara lain: analisis kebutuhan bisnis, analisis kebutuhan pengguna, analisis kebutuhan fungsional, analisis kebutuhan non-fungsional, serta analisis kebutuhan sistem. Tahap selanjutnya yakni tahap planning dan modeling, dimana pada tahap ini dilakukan perancangan proses bisnis serta desain sistem secara detail sebagaimana dijabarkan pada subbab perancangan sistem. Setelah tahap desain sistem selesai, dilakukan tahap construction (implementasi) dan deployment.")
 
-    add_h2("4.2 Analisis Kebutuhan Sistem")
-    add_h3("4.2.1 Analisis Kebutuhan Fungsional (Functional Requirements)")
-    add_p("Kebutuhan fungsional sistem dirancang secara ketat berdasarkan hak akses 2 Aktor Utama Sistem:")
-    
-    headers_fn = ["ID Kebutuhan", "Deskripsi Kebutuhan Fungsional", "Aktor Berwenang"]
-    widths_fn = [1.2, 3.8, 1.5]
-    data_fn = [
-        ["SKF-01", "Sistem menyediakan autentikasi pengguna dengan verifikasi username dan password serta pencatatan audit riwayat login di database.", "Admin TI Regional 3 & Kepala TI Kantor Pusat"],
-        ["SKF-02", "Sistem mengarahkan pengguna secara otomatis ke tampilan antarmuka yang sesuai dengan perannya pasca-login (Role-based Redirection).", "Sistem (Otomatis)"],
-        ["SKF-03", "Sistem menyediakan form pencatatan transaksi penimbangan TBS (Plat nomor, PKS, jam masuk, jam keluar, Gross, Tarra) dan menghitung nilai Netto secara otomatis.", "Admin TI Regional 3"],
-        ["SKF-04", "Sistem menyediakan tombol Generate XML untuk mengonversi data transaksi menjadi dokumen XML ADO Rowset berstandar korporasi.", "Admin TI Regional 3"],
-        ["SKF-05", "Sistem menyediakan fitur Push to SAP untuk mengirimkan payload XML data transaksi ke server SAP holding, baik secara satuan maupun massal (Batch Push All).", "Admin TI Regional 3"],
-        ["SKF-06", "Sistem menampilkan peta interaktif GIS pemantauan status koneksi VPN dan kondisi 12 unit PKS Regional III.", "Admin TI Regional 3"],
-        ["SKF-07", "Sistem menampilkan kartu metrik eksekutif konsolidasi tonase total (Ton & Kg), persentase sinkronisasi SAP, dan SLA uptime gateway holding.", "Kepala TI Kantor Pusat"],
-        ["SKF-08", "Sistem menampilkan grafik batang distribusi tonase TBS 12 unit PKS dan grafik donat status kepatuhan SAP holding.", "Kepala TI Kantor Pusat"],
-        ["SKF-09", "Sistem menyajikan visualisasi topologi jaringan data hub yang menghubungkan Regional III (Pekanbaru) menuju Data Center Jakarta.", "Kepala TI Kantor Pusat"],
-        ["SKF-10", "Sistem menyajikan tabel matriks konsolidasi kinerja 12 PKS terpantau beserta fitur pencarian cepat tanpa formulir input penimbangan.", "Kepala TI Kantor Pusat"],
-        ["SKF-11", "Sistem menyediakan tabel audit trail transaksi terverifikasi SAP holding dan tombol cetak laporan eksekutif (Print Layout).", "Kepala TI Kantor Pusat"],
-        ["SKF-12", "Sistem menyediakan fitur logout yang secara otomatis memperbarui waktu sesi berakhir pada tabel riwayat aktivitas pengguna.", "Admin TI Regional 3 & Kepala TI Kantor Pusat"]
+    add_h3("4.1.1 Analisis Kebutuhan Bisnis")
+    add_p("Pada tahap analisis kebutuhan bisnis ini dilakukan analisis terhadap proses bisnis yang terjadi pada proses integrasi data transaksi penimbangan TBS di unit-unit PKS PTPN IV Regional 3 menuju sistem SAP Kantor Pusat. Proses bisnis dimulai dari Admin TI Regional 3 mencatat data penimbangan (Gross dan Tara) pada stasiun kerja, kemudian data tersebut diproses oleh sistem menjadi dokumen XML SAP-Compliant berstandar ADO Rowset, dikirimkan ke Server SAP Kantor Pusat, hingga hasilnya dipantau dan dilaporkan secara real-time pada Executive Dashboard Kepala TI Kantor Pusat Jakarta.")
+    add_p("Diagram alur proses bisnis integrasi data timbangan ke SAP melibatkan alur komunikasi antar-entitas sebagai berikut: Admin TI Regional 3 melakukan penimbangan TBS dan mencatat Gross & Tara pada form input timbangan -> Sistem Web (BridgeController) melakukan input data & menghitung Netto = Gross - Tara -> Menyimpan transaksi timbangan dengan status Pending -> Sistem men-generate dokumen XML SAP-Compliant (ADO Rowset) -> Sistem mengirimkan payload XML via jalur integrasi VPN menuju Server SAP Kantor Pusat -> Server SAP menerima dan memvalidasi struktur data -> Jika struktur data valid, Server SAP menyimpan data dan mengirim respons HTTP 200 OK ke sistem -> Sistem meng-update status transaksi menjadi Sent dan mencatat log integrasi SAP -> Sistem menampilkan notifikasi status transaksi kepada Admin TI Regional 3 -> Kepala TI PTPN Kantor Pusat di Jakarta menerima laporan konsolidasi eksekutif dan memantau SLA ketersediaan gateway secara real-time.")
+
+    add_p("A. Identifikasi Masalah", bold_prefix="", indent=0)
+    add_p("Identifikasi masalah dilakukan dengan mengamati proses integrasi data timbangan yang terjadi pada PTPN IV Regional 3, seperti menentukan masalah dalam proses pengiriman data ke SAP, serta menentukan solusi dan tujuan yang ingin diperoleh. Sesuai dengan alur bisnis yang terjadi, maka diperoleh beberapa permasalahan yang muncul dalam proses integrasi data timbangan PKS ke sistem SAP sebagaimana disajikan pada Tabel 4.1.")
+
+    # Tabel 4.1 Permasalahan, Dampak, dan Solusi (Persis Tabel 3.1 PDF)
+    add_p("Tabel 4.1 Permasalahan, Dampak, dan Solusi", bold_prefix="")
+    headers_t31 = ["Permasalahan", "Dampak", "Solusi"]
+    widths_t31 = [2.0, 2.2, 2.3]
+    data_t31 = [
+        [
+            "Konversi data transaksi timbangan ke format XML SAP masih dilakukan secara manual dan rawan human error pada penyesuaian format data.",
+            "Data transaksi berisiko ditolak (reject) oleh sistem SAP Kantor Pusat sehingga transaksi harus diinput dan dikirim ulang.",
+            "Membangun sistem yang dapat melakukan auto-generate dokumen XML SAP-Compliant (ADO Rowset) secara otomatis dari data transaksi timbangan."
+        ],
+        [
+            "Belum ada dashboard terpusat untuk memantau status pengiriman data transaksi ke SAP dari seluruh unit PKS.",
+            "Admin TI kesulitan mengetahui transaksi mana yang berstatus gagal (pending/reject) tanpa melakukan pengecekan manual satu per satu.",
+            "Membangun modul dashboard monitoring & log integrasi SAP yang menampilkan status pengiriman secara real-time dari 12 unit PKS."
+        ],
+        [
+            "Belum terdapat pencatatan riwayat (audit trail) yang lengkap atas setiap transaksi yang dikirim ke SAP.",
+            "Sulit menelusuri riwayat pengiriman saat terjadi komplain atau selisih data dengan pihak SAP Kantor Pusat.",
+            "Membangun modul Log Integrasi SAP yang mencatat nomor referensi, waktu kirim, dan status respons setiap transaksi secara transparan."
+        ],
+        [
+            "Belum adanya antarmuka ringkas tingkat holding bagi pimpinan di Jakarta untuk melihat konsolidasi tonase dan SLA gateway.",
+            "Kepala TI Kantor Pusat harus meminta rekap manual melalui email/telepon dan tidak dapat memantau SLA jaringan holding secara langsung.",
+            "Membangun modul Executive Holding Dashboard khusus bagi Kepala TI Kantor Pusat Jakarta yang menyajikan konsolidasi tonase, SLA, dan status integrasi SAP tanpa form input operasional."
+        ]
     ]
-    create_styled_table(headers_fn, data_fn, widths_fn, [WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.LEFT])
+    create_styled_table(headers_t31, data_t31, widths_t31, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY, WD_ALIGN_PARAGRAPH.JUSTIFY])
 
-    add_h3("4.2.2 Analisis Kebutuhan Non-Fungsional (Non-Functional Requirements)")
-    add_p("Kebutuhan non-fungsional ditinjau menggunakan model FURPS (Functionality, Usability, Reliability, Performance, Supportability):")
-    add_bullet("Antarmuka dirancang responsif, bersih, berorientasi korporat PTPN dengan palet warna Forest Green dan Gold, serta navigasi yang intuitif.", "1. Usability (Kemudahan Penggunaan): ")
-    add_bullet("Sistem menjamin Service Level Agreement (SLA) ketersediaan transmisi gateway hingga 99.8% dengan penanganan kegagalan koneksi secara anggun (graceful degradation).", "2. Reliability (Keandalan): ")
-    add_bullet("Waktu generasi berkas XML ADO Rowset di bawah 150 milidetik per 10 transaksi, serta waktu rendering dashboard eksekutif di bawah 1 detik.", "3. Performance (Kinerja): ")
-    add_bullet("Dilengkapi proteksi CSRF token pada setiap formulir POST, hashing password berbasis Bcrypt standar industri, dan pencatatan IP address pada tabel audit login.", "4. Security (Keamanan): ")
+    add_p("B. Identifikasi Pengguna", bold_prefix="", indent=0)
+    add_p("Identifikasi pengguna dilakukan dengan mengamati bagaimana karakteristik pengguna yang terlibat dalam proses integrasi data timbangan pada PTPN IV Regional 3 dan Kantor Pusat Jakarta. Pengguna sistem secara tegas DIBAGI MENJADI 2 AKTOR UTAMA: Admin TI Regional 3 dan Kepala TI PTPN Kantor Pusat (Jakarta). Pengguna memiliki pengalaman dalam mengoperasikan komputer dengan sistem operasi Windows, dengan pekerjaan sehari-hari menggunakan Microsoft Office dan peramban web (browser).")
 
-    add_h2("4.3 Perancangan UML (Unified Modeling Language)")
-    add_h3("4.3.1 Use Case Diagram (Ditegaskan HANYA 2 Aktor)")
-    add_p("Berbeda dengan pemodelan konvensional yang memecah operator lokal dan entitas mesin eksternal, Use Case Diagram pada sistem ini DITEGASKAN HANYA MEMILIKI 2 AKTOR MANUSIA SESUAI PERSYARATAN PENGUJIAN TUGAS AKHIR, yaitu:")
-    add_bullet("Aktor yang bertanggung jawab atas seluruh operasional teknis jembatan timbang, pembuatan XML ADO Rowset, eksekusi transmisi SAP regional, dan monitoring 12 unit PKS.", "Aktor 1: Admin TI Regional 3 - ")
-    add_bullet("Aktor tingkat pimpinan holding yang bertindak sebagai pemantau eksekutif, bertugas meninjau metrik konsolidasi tonase, memantau SLA uptime jaringan data center, mengevaluasi rasio keberhasilan integrasi SAP, dan mencetak laporan eksekutif holding tanpa terlibat dalam pengisian tiket timbangan.", "Aktor 2: Kepala TI PTPN Kantor Pusat (Jakarta) - ")
-
-    # Tabel Use Case Mapping
-    headers_uc_map = ["Aktor Sistem", "Daftar Use Case yang Dimiliki", "Karakteristik & Wewenang Hak Akses"]
-    widths_uc_map = [1.8, 2.5, 2.2]
-    data_uc_map = [
-        ["Admin TI Regional 3\n(admin.ti.regional3)", "1. Melakukan Login Akun\n2. Menginput Transaksi Timbangan\n3. Menghitung Netto Otomatis\n4. Men-generate XML ADO Rowset\n5. Melakukan Push Data ke SAP (Single/All)\n6. Memantau Status Jaringan 12 PKS\n7. Meninjau Riwayat Aktivitas Sesi\n8. Melakukan Logout Sesi", "Tingkat Operasional Regional:\nMemiliki kontrol manipulasi data penimbangan lokal, konversi berkas XML, dan eksekusi push transmisi data ke SAP."],
-        ["Kepala TI Kantor Pusat (Jakarta)\n(kepala.ti.pusat)", "1. Melakukan Login Akun\n2. Memantau Metrik Konsolidasi Tonase Holding\n3. Memantau Rasio Keberhasilan Integrasi SAP\n4. Memantau SLA Ketersediaan Jalur Gateway\n5. Melihat Topologi Data Hub Jakarta-Sumatera\n6. Meninjau Matriks Kinerja 12 Unit PKS\n7. Memeriksa Audit Ledger Verifikasi SAP\n8. Mencetak Dokumen Laporan Eksekutif\n9. Melakukan Logout Sesi", "Tingkat Eksekutif Holding:\nMemiliki kontrol pemantauan menyeluruh tingkat nasional/holding, tanpa hak akses input timbangan, berorientasi KPI strategis."]
+    # Tabel 4.2 Peran Pengguna (Persis Tabel 3.2 PDF disesuaikan 2 Aktor)
+    add_p("Tabel 4.2 Peran Pengguna", bold_prefix="")
+    headers_t32 = ["No", "Nama Pengguna (Aktor)", "Peran dan Tanggung Jawab dalam Sistem"]
+    widths_t32 = [0.5, 2.3, 3.7]
+    data_t32 = [
+        [
+            "1.",
+            "Admin TI Regional 3\n(admin.ti.regional3)",
+            "1. Menginput data transaksi penimbangan TBS (plat, Gross, Tara, jam masuk/keluar)\n"
+            "2. Memvalidasi perhitungan otomatis Netto = Gross - Tara\n"
+            "3. Men-generate dokumen konfigurasi XML standar resmi Microsoft ADO Rowset\n"
+            "4. Mengeksekusi pengiriman (push) data transaksi ke Server SAP (Satuan & Batch Push All)\n"
+            "5. Memantau dashboard status integrasi dan konektivitas VPN 12 unit PKS\n"
+            "6. Mengelola data master unit PKS dan meninjau log integrasi SAP yang gagal (retry)"
+        ],
+        [
+            "2.",
+            "Kepala TI PTPN Kantor Pusat (Jakarta)\n(kepala.ti.pusat)",
+            "1. Memantau Executive Dashboard konsolidasi tonase makro 12 unit PKS Regional III (Ton & Kg)\n"
+            "2. Memantau Service Level Agreement (SLA) ketersediaan jaringan gateway data center (99.8%)\n"
+            "3. Memantau persentase kepatuhan dan rasio keberhasilan integrasi data transaksi ke SAP holding\n"
+            "4. Melihat visualisasi spasial topologi data hub Regional III ke Data Center Jakarta\n"
+            "5. Meninjau matriks kinerja komparasi 12 unit PKS tanpa dibebani form input timbangan\n"
+            "6. Memeriksa audit ledger transaksi SAP holding dan mencetak laporan konsolidasi eksekutif"
+        ]
     ]
-    create_styled_table(headers_uc_map, data_uc_map, widths_uc_map, [WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+    create_styled_table(headers_t32, data_t32, widths_t32, [WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
 
-    add_h3("4.3.2 Skenario Use Case Lengkap untuk Kedua Aktor")
-    add_p("Berikut adalah rincian skenario alur kerja use case inti untuk kedua aktor sistem:")
+    add_h3("4.1.2 Analisis Kebutuhan Pengguna")
+    add_p("Analisis kebutuhan pengguna dilakukan untuk mengetahui kebutuhan pengguna dalam proses integrasi data timbangan. Langkah yang dilakukan adalah dengan melakukan pengamatan terhadap bagaimana pengguna terlibat dalam proses integrasi serta bagaimana pengguna dapat memahami informasi yang dibutuhkan.")
 
-    # Skenario 1: Login
-    add_p("Tabel 4.1 Skenario Use Case 1: Autentikasi Pengguna & Redirection", bold_prefix="")
-    headers_sc1 = ["Atribut Skenario", "Deskripsi Rincian"]
-    widths_sc1 = [1.8, 4.7]
-    data_sc1 = [
-        ["Nama Use Case", "Autentikasi Pengguna & Dynamic Redirection (UC-01)"],
-        ["Aktor", "Admin TI Regional 3, Kepala TI PTPN Kantor Pusat Jakarta"],
-        ["Deskripsi", "Memverifikasi kredensial pengguna dan mengarahkan ke dashboard yang relevan sesuai peran yang dimiliki."],
-        ["Kondisi Awal (Pre-Condition)", "Pengguna membuka peramban web dan mengakses URL login (/login)."],
-        ["Kondisi Akhir (Post-Condition)", "Sesi aktif tersimpan di server dan riwayat login tercatat pada tabel riwayat_logins."],
-        ["Alur Utama (Main Flow)", "1. Pengguna memasukkan username dan password pada form login.\n2. Pengguna menekan tombol Masuk ke Dashboard.\n3. Sistem memvalidasi kredensial pengguna ke tabel users menggunakan Hash Bcrypt.\n4. Sistem mencatat waktu login, alamat IP, dan User-Agent ke tabel riwayat_logins.\n5. Jika peran adalah 'Admin Regional', sistem mengarahkan ke /dashboard (Dashboard Regional 3).\n6. Jika peran adalah 'Kepala TI Pusat', sistem mengarahkan ke /dashboard/pusat (Executive Holding Dashboard)."],
-        ["Alur Alternatif", "Jika username atau password tidak cocok, sistem menampilkan pesan peringatan error autentikasi dan tetap berada pada form login."]
+    # Tabel 4.3 Kebutuhan Informasi dan Kebutuhan Data Pengguna (Persis Tabel 3.3 PDF)
+    add_p("Tabel 4.3 Kebutuhan Informasi dan Kebutuhan Data Pengguna", bold_prefix="")
+    headers_t33 = ["No", "Nama Pengguna (Aktor)", "Kebutuhan Informasi", "Kebutuhan Data"]
+    widths_t33 = [0.4, 1.8, 2.2, 2.1]
+    data_t33 = [
+        [
+            "1.",
+            "Admin TI Regional 3",
+            "1. Informasi status transaksi (Pending/Sent)\n"
+            "2. Informasi hasil perhitungan otomatis Netto\n"
+            "3. Informasi status konektivitas VPN per unit PKS\n"
+            "4. Informasi log integrasi SAP (referensi, waktu kirim, status respons)\n"
+            "5. Informasi statistik total XML dihasilkan",
+            "1. Data 12 unit PKS (kode, nama, IP VPN)\n"
+            "2. Data transaksi timbangan (plat kendaraan, Gross, Tara, jam)\n"
+            "3. Data log integrasi SAP dan riwayat sesi login"
+        ],
+        [
+            "2.",
+            "Kepala TI PTPN Kantor Pusat (Jakarta)",
+            "1. Informasi ringkasan performa konsolidasi holding (total tonase dalam Ton & Kg)\n"
+            "2. Informasi persentase keberhasilan sinkronisasi SAP holding\n"
+            "3. Informasi uptime SLA jaringan gateway data center holding (99.8%)\n"
+            "4. Informasi sebaran tonase dan kepatuhan 12 unit PKS\n"
+            "5. Informasi status jalur backbone Jakarta-Pekanbaru",
+            "1. Data rekapitulasi transaksi & status integrasi SAP per periode\n"
+            "2. Data agregasi tonase 12 unit PKS terpantau\n"
+            "3. Data audit trail verifikasi transaksi SAP holding"
+        ]
     ]
-    create_styled_table(headers_sc1, data_sc1, widths_sc1, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+    create_styled_table(headers_t33, data_t33, widths_t33, [WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY, WD_ALIGN_PARAGRAPH.JUSTIFY])
 
-    # Skenario 2: Input & Generate XML (Admin Regional)
-    add_p("Tabel 4.2 Skenario Use Case 2: Input Transaksi & Generate XML ADO (Khusus Admin Regional)", bold_prefix="")
-    data_sc2 = [
-        ["Nama Use Case", "Input Transaksi Penimbangan & Auto Generate ADO XML (UC-02)"],
+    add_h3("4.1.3 Analisis Kebutuhan Fungsional")
+    add_p("Kebutuhan fungsionalitas adalah suatu layanan sistem yang harus disediakan dan dapat berinteraksi dengan pengguna sistem, seperti apa saja di dalam sistem dan apa yang dapat dilakukan oleh pengguna. Sistem yang dirancang harus mampu memenuhi kebutuhan fungsionalitas sebagai berikut:")
+
+    # Fungsi A: Input & Generate Dokumen XML (Tabel 3.4 PDF)
+    add_p("A. Fungsi Input & Generate Dokumen XML Transaksi Timbangan", bold_prefix="", indent=0)
+    add_p("Tabel 4.4 Fungsi Input & Generate Dokumen XML Transaksi Timbangan", bold_prefix="")
+    headers_fn_a = ["Komponen Fungsi", "Deskripsi Rincian"]
+    widths_fn_a = [2.0, 4.5]
+    data_fn_a = [
+        ["Nama Fungsi", "Input & Generate Dokumen XML Transaksi Timbangan"],
+        ["Deskripsi", "Pada fungsi ini dilakukan kegiatan input data transaksi penimbangan TBS oleh Admin TI Regional 3, perhitungan Netto secara otomatis, serta generate dokumen XML SAP-Compliant (ADO Rowset)."],
+        ["Kondisi Awal", "Data master 12 unit PKS telah tersedia pada basis data sistem."],
+        ["Alur Normal - Aksi Pengguna", "1. Admin TI Regional 3 login ke sistem.\n2. Sistem menampilkan halaman modul Transaksi & XML Engine.\n3. Admin memasukkan plat kendaraan, lokasi PKS, jam masuk/keluar, Gross, dan Tara lalu menekan tombol 'Simpan & Auto Generate XML'."],
+        ["Alur Normal - Respon Sistem", "1. Sistem memvalidasi kelengkapan nilai input.\n2. Sistem menghitung Netto = Gross - Tara secara otomatis.\n3. Sistem menyusun nomor nota transaksi otomatis (NT-KODEPKS-TIMESTAMP).\n4. Sistem membentuk dokumen XML berstandar Microsoft ADO Rowset (xmlns:rs='urn:schemas-microsoft-com:rowset' dan tag z:row).\n5. Sistem menyimpan data transaksi dan menampilkan notifikasi sukses berstatus 'Pending'."],
+        ["Kondisi Akhir", "Di dalam fungsi ini dapat dilakukan penambahan data transaksi timbangan beserta hasil generate dokumen XML SAP-Compliant yang siap dikirimkan ke SAP."]
+    ]
+    create_styled_table(headers_fn_a, data_fn_a, widths_fn_a, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+
+    # Fungsi B: Integrasi (Push) Data ke SAP (Tabel 3.5 PDF)
+    add_p("B. Fungsi Integrasi (Push) Data ke SAP", bold_prefix="", indent=0)
+    add_p("Tabel 4.5 Fungsi Integrasi (Push) Data ke SAP", bold_prefix="")
+    data_fn_b = [
+        ["Nama Fungsi", "Integrasi (Push) Data ke SAP"],
+        ["Deskripsi", "Pada fungsi ini dilakukan kegiatan pengiriman dokumen XML transaksi timbangan menuju Server SAP Kantor Pusat melalui jalur integrasi VPN (baik satuan maupun Batch Push All)."],
+        ["Kondisi Awal", "Data transaksi telah berstatus 'Pending' dan berkas XML telah tersusun."],
+        ["Alur Normal - Aksi Pengguna", "1. Admin TI Regional 3 memilih transaksi pada tabel ledger dan menekan tombol 'Push SAP', atau menekan tombol 'Kirim Semua Antrean ke SAP'."],
+        ["Alur Normal - Respon Sistem", "1. Sistem menyusun payload XML ADO Rowset.\n2. Sistem mengirimkannya melalui jalur integrasi IP VPN menuju Server SAP.\n3. Server SAP memvalidasi struktur data dan mengirimkan respons HTTP 200 OK beserta nomor dokumen referensi SAP.\n4. Sistem memperbarui status transaksi menjadi 'Sent' dan mencatat riwayat ke log integrasi SAP."],
+        ["Kondisi Akhir", "Di dalam fungsi ini status transaksi ter-update menjadi 'Sent' (berhasil) atau 'Failed' (gagal, perlu ditinjau ulang)."]
+    ]
+    create_styled_table(headers_fn_a, data_fn_b, widths_fn_a, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+
+    # Fungsi C: Monitoring & Log Integrasi SAP Regional (Tabel 3.6 PDF)
+    add_p("C. Fungsi Monitoring & Log Integrasi SAP Regional", bold_prefix="", indent=0)
+    add_p("Tabel 4.6 Fungsi Monitoring & Log Integrasi SAP Regional", bold_prefix="")
+    data_fn_c = [
+        ["Nama Fungsi", "Monitoring & Log Integrasi SAP Regional"],
+        ["Deskripsi", "Pada fungsi ini dilakukan kegiatan pemantauan status integrasi serta peninjauan riwayat (audit trail) pengiriman data ke SAP di tingkat regional."],
+        ["Kondisi Awal", "Terdapat rekaman data transaksi dan log integrasi pada sistem."],
+        ["Alur Normal - Aksi Pengguna", "1. Admin TI Regional 3 membuka halaman Dashboard atau tab Log Integrasi SAP.\n2. Admin dapat memfilter atau mencari log berdasarkan unit PKS atau status transaksi."],
+        ["Alur Normal - Respon Sistem", "1. Sistem menampilkan ringkasan status integrasi (total XML dihasilkan, jumlah Sent, antrean Pending, status konektivitas 12 PKS).\n2. Sistem menampilkan daftar log berisi nomor referensi SAP, waktu kirim, dan status respons."],
+        ["Kondisi Akhir", "Di dalam fungsi ini Admin dapat melakukan pemantauan operasional dan penelusuran riwayat integrasi data timbangan ke SAP."]
+    ]
+    create_styled_table(headers_fn_a, data_fn_c, widths_fn_a, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+
+    # Fungsi D: Executive Monitoring Holding (Khusus Kepala TI Pusat)
+    add_p("D. Fungsi Executive Monitoring Holding & SLA Gateway Jakarta", bold_prefix="", indent=0)
+    add_p("Tabel 4.7 Fungsi Executive Holding Monitoring & SLA Gateway", bold_prefix="")
+    data_fn_d = [
+        ["Nama Fungsi", "Executive Holding Monitoring & SLA Gateway Jakarta"],
+        ["Deskripsi", "Pada fungsi ini disajikan pemantauan tingkat pimpinan holding atas konsolidasi tonase 12 unit PKS, keandalan SLA gateway data center, dan kepatuhan SAP holding."],
+        ["Kondisi Awal", "Kepala TI Kantor Pusat Jakarta telah terautentikasi dan mengakses route /dashboard/pusat."],
+        ["Alur Normal - Aksi Pengguna", "1. Kepala TI membuka Executive Monitoring Dashboard.\n2. Kepala TI meninjau 4 kartu metrik KPI holding, grafik distribusi tonase, dan topologi peta Leaflet.\n3. Kepala TI memfilter matriks kinerja 12 PKS dan meninjau audit ledger SAP.\n4. Kepala TI menekan tombol 'Cetak Laporan Eksekutif'."],
+        ["Alur Normal - Respon Sistem", "1. Sistem menghitung agregasi total tonase Netto (Ton & Kg), rasio sinkronisasi SAP (%), dan uptime SLA (99.8%).\n2. Sistem merender visualisasi Chart.js dan peta spasial backbone Jakarta-Pekanbaru.\n3. Sistem menyajikan antarmuka cetak resmi (@media print) tanpa tombol navigasi operasional."],
+        ["Kondisi Akhir", "Kepala TI Kantor Pusat memperoleh informasi strategis holding secara instan, transparan, dan dapat mengunduh/mencetak dokumen laporan eksekutif."]
+    ]
+    create_styled_table(headers_fn_a, data_fn_d, widths_fn_a, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+
+    add_h3("4.1.4 Analisis Kebutuhan Non-Fungsional")
+    add_p("Analisis kebutuhan non-fungsional dilakukan untuk mengetahui spesifikasi kebutuhan sistem yang mendukung kebutuhan fungsional. Berikut adalah beberapa kriteria kebutuhan non-fungsional dari sistem yang dirancang sebagaimana disajikan pada Tabel 4.8.")
+
+    # Tabel 4.8 Keterkaitan Kebutuhan Non-Fungsional Aplikasi (Persis Tabel 3.7 PDF)
+    add_p("Tabel 4.8 Keterkaitan Kebutuhan Non-Fungsional Aplikasi", bold_prefix="")
+    headers_t37 = ["Kriteria", "Kebutuhan Non-Fungsional"]
+    widths_t37 = [1.8, 4.7]
+    data_t37 = [
+        [
+            "Security",
+            "1. Pengguna login menggunakan akun dan password terenkripsi Bcrypt sesuai peran (Admin Regional / Kepala TI Pusat).\n"
+            "2. Jalur pengiriman data ke SAP menggunakan koneksi terenkripsi (IP VPN) hasil Kerja Praktek sebelumnya.\n"
+            "3. Proteksi CSRF Token pada setiap formulir transmisi data dan audit trail riwayat login."
+        ],
+        [
+            "Usability",
+            "1. Antarmuka dashboard mudah dipahami oleh operator/admin di lapangan dengan pelatihan minimal.\n"
+            "2. Antarmuka eksekutif dirancang bersih dan ringkas bagi pimpinan holding tanpa formulir teknis timbangan yang membingungkan."
+        ],
+        [
+            "Accuracy",
+            "1. Perhitungan Netto (Gross - Tara) dilakukan otomatis dengan presisi desimal tepat.\n"
+            "2. Skema XML ADO Recordset (z:row) harus valid dan identik dengan standar perusahaan agar tidak terjadi reject oleh server SAP."
+        ],
+        [
+            "Availability",
+            "1. Sistem harus dapat diakses selama jam operasional penimbangan di setiap unit PKS (ketersediaan tinggi).\n"
+            "2. Diperlukan koneksi jaringan/VPN yang stabil pada setiap unit PKS dengan target Service Level Agreement (SLA) 99.8%."
+        ]
+    ]
+    create_styled_table(headers_t37, data_t37, widths_t37, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+
+    add_h3("4.1.5 Analisis Kebutuhan Sistem")
+    add_p("Analisis kebutuhan sistem dilakukan guna mengetahui spesifikasi kebutuhan sistem dalam membangun sistem Auto Generate Config XML Pada Timbangan PTPN 4 Regional 3. Spesifikasi kebutuhan sistem melibatkan analisis kebutuhan perangkat keras (hardware) dan analisis kebutuhan perangkat lunak (software).")
+
+    add_p("A. Analisis Kebutuhan Perangkat Keras", bold_prefix="", indent=0)
+    add_p("Pada tahap ini dilakukan analisis kebutuhan perangkat keras yang mampu mendukung kinerja sistem informasi ini. Berikut adalah tabel kebutuhan perangkat keras.")
+
+    # Tabel 4.9 Kebutuhan Perangkat Keras (Persis Tabel 3.8 PDF)
+    add_p("Tabel 4.9 Kebutuhan Perangkat Keras", bold_prefix="")
+    headers_t38 = ["Komponen", "Spesifikasi Minimum yang Digunakan"]
+    widths_t38 = [2.2, 4.3]
+    data_t38 = [
+        ["Processor", "Intel Core i3 (minimum) atau lebih tinggi / AMD Ryzen 3"],
+        ["Memory", "4 GB RAM DDR4 atau lebih tinggi"],
+        ["Harddisk", "SSD 128 GB atau lebih tinggi"],
+        ["Monitor", "Resolusi 1024x768 atau lebih tinggi (Rekomendasi 1920x1080 Full HD)"],
+        ["Jaringan", "Koneksi Internet/IP VPN yang stabil di setiap unit PKS (Bandwidth 10 Mbps)"]
+    ]
+    create_styled_table(headers_t38, data_t38, widths_t38, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.LEFT])
+
+    add_p("B. Analisis Kebutuhan Perangkat Lunak", bold_prefix="", indent=0)
+    add_p("Pada tahap analisis kebutuhan perangkat lunak ini dijelaskan aplikasi apa saja yang mendukung operasional sistem informasi ini.")
+
+    # Tabel 4.10 Kebutuhan Perangkat Lunak (Persis Tabel 3.9 PDF)
+    add_p("Tabel 4.10 Kebutuhan Perangkat Lunak", bold_prefix="")
+    headers_t39 = ["Komponen", "Spesifikasi Perangkat Lunak yang Digunakan"]
+    widths_t39 = [2.4, 4.1]
+    data_t39 = [
+        ["Sistem Operasi (Host)", "Windows 10 / Windows 11 / Server 64-bit"],
+        ["Sistem Operasi (Gateway)", "Linux Debian 11 / 12 (hasil Kerja Praktek sebelumnya)"],
+        ["Bahasa Pemrograman", "PHP versi 8.2+ (Framework Laravel 11) & JavaScript ES6"],
+        ["Basis Data", "MySQL Community Server 8.0+ / MariaDB (Database: db_timbangan)"],
+        ["Aplikasi Server", "Apache 2.4 / Nginx / Laravel Built-in Development Server"],
+        ["Web Browser", "Google Chrome, Microsoft Edge, atau Mozilla Firefox versi terbaru"]
+    ]
+    create_styled_table(headers_t39, data_t39, widths_t39, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.LEFT])
+
+    add_h2("4.2 Perancangan Sistem")
+    add_p("Perancangan sistem merupakan suatu gambaran, perancangan, dan pembuatan skema atau pengaturan dari beberapa elemen terpisah ke dalam suatu kesatuan yang utuh serta mempunyai fungsi dan tujuan. Elemen-elemen sistem informasi dirancang dengan tujuan untuk dikomunikasikan dengan pengguna (user). Perancangan sistem ini meliputi perancangan alur proses bisnis yang akan dibangun berdasarkan kebutuhan yang teridentifikasi pada saat analisis, perancangan struktur data dan kelas sistem, serta perancangan arsitektur/komponen program yang akan dibangun.")
+    add_p("Perancangan sistem pada Tugas Akhir ini berfokus pada sisi sistem informasi (aplikasi web) yaitu AutoXML Gateway, meliputi bagaimana data transaksi penimbangan Tandan Buah Segar (TBS) diinput, diproses, dikonversi menjadi dokumen XML SAP-Compliant (ADO Rowset), dikirim (push) ke server SAP Kantor Pusat, serta dipantau dan diaudit melalui aplikasi web. Berbeda dengan Laporan Kerja Praktek sebelumnya yang berfokus pada perancangan infrastruktur jaringan (Network Gateway Debian VM dan IP VPN) sebagai jalur komunikasi data, infrastruktur jaringan tersebut pada perancangan ini diposisikan sebagai komponen pendukung/eksternal (integration channel) yang menjembatani sistem informasi dengan Server SAP Kantor Pusat, dan tidak dirancang ulang pada dokumen ini.")
+
+    add_h3("4.2.1 Tujuan Perancangan Sistem")
+    add_p("Tujuan utama dari perancangan sistem Auto Generate Config XML ini adalah untuk memberikan gambaran secara umum kepada pengguna (Admin TI Regional 3, Kepala TI Kantor Pusat, dan dosen penilai/penguji) mengenai sistem informasi yang akan dibangun, serta mampu menjawab kebutuhan proses bisnis integrasi data timbangan PKS ke sistem SAP Kantor Pusat secara terstruktur, meliputi:")
+    add_bullet("Alur proses bisnis sistem yang mudah dipahami oleh seluruh pemangku kepentingan, dimodelkan melalui Use Case Diagram HANYA 2 AKTOR beserta skenarionya.", "● ")
+    add_bullet("Alur kerja (workflow) proses input data hingga integrasi data ke SAP, dimodelkan melalui Activity Diagram.", "● ")
+    add_bullet("Urutan komunikasi antar objek/komponen sistem berdasarkan waktu, dimodelkan melalui Sequence Diagram.", "● ")
+    add_bullet("Struktur data dan relasi antar entitas sistem sebagai dasar perancangan basis data, dimodelkan melalui Class Diagram.", "● ")
+    add_bullet("Arsitektur modul/komponen perangkat lunak sistem sebagai acuan pengembangan aplikasi, dimodelkan melalui Component Diagram.", "● ")
+
+    add_h3("4.2.2 Gambaran Umum Sistem yang Diusulkan")
+    add_p("Sebagai gambaran umum dari sistem yang diusulkan, sistem ini merupakan aplikasi berbasis web yang dapat diakses melalui jaringan lokal/intranet/internet, sehingga Admin TI Regional 3 dan Kepala TI Kantor Pusat hanya memerlukan perangkat komputer/laptop dengan fasilitas browser untuk mengelola transaksi penimbangan TBS di 12 unit PKS PTPN IV Regional 3, mengonversinya secara otomatis menjadi dokumen XML sesuai skema integrasi SAP, mengirimkan dokumen tersebut ke sistem SAP Kantor Pusat, serta mencatat dan menampilkan status/log setiap transaksi integrasi secara berjenjang.")
+
+    # Tabel Modul Sistem yang Diusulkan (Persis Halaman 11-12 PDF + Executive Dashboard)
+    add_p("Tabel 4.11 Modul Utama Sistem yang Diusulkan", bold_prefix="")
+    headers_mod = ["No", "Nama Modul", "Fungsi Utama dalam Sistem"]
+    widths_mod = [0.4, 2.2, 3.9]
+    data_mod = [
+        [
+            "1",
+            "Dashboard & Monitoring Regional",
+            "Menampilkan ringkasan performa integrasi secara real-time: total XML dihasilkan, status pengiriman (Sent/Pending), status konektivitas 12 unit PKS, dan peta geografis penimbangan regional."
+        ],
+        [
+            "2",
+            "Transaksi & XML Generator Engine",
+            "Modul input data transaksi timbangan (plat kendaraan, lokasi PKS, jam masuk/keluar, Gross, Tara), perhitungan otomatis Netto, serta generate dokumen XML berstandar Microsoft ADO Rowset."
+        ],
+        [
+            "3",
+            "Log Integrasi SAP Regional",
+            "Modul audit trail seluruh aktivitas pengiriman data ke SAP: nomor referensi SAP, waktu kirim, status respons (HTTP 200 OK / reject), dan riwayat pengiriman ulang transaksi gagal."
+        ],
+        [
+            "4",
+            "Executive Holding Dashboard",
+            "Modul khusus Kepala TI Kantor Pusat Jakarta: konsolidasi tonase makro 12 PKS (Ton & Kg), pemantauan SLA gateway holding (99.8%), rasio kepatuhan SAP holding, peta topologi data hub, dan cetak laporan eksekutif."
+        ]
+    ]
+    create_styled_table(headers_mod, data_mod, widths_mod, [WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+
+    add_p("Aktor yang Terlibat:", bold_prefix="", indent=0)
+    add_p("Dalam perancangan sistem yang diusulkan, pemodelan use case HANYA DIBATASI PADA 2 AKTOR MANUSIA SESUAI KETENTUAN PENGUJIAN TUGAS AKHIR:")
+    add_bullet("Admin TI Regional 3 — Aktor manusia yang bertugas menginput transaksi penimbangan TBS, memvalidasi hasil hitung Netto, men-generate berkas konfigurasi XML ADO Rowset, mengeksekusi push data ke SAP, memantau jaringan 12 PKS, dan mengelola log integrasi lokal.", "● ")
+    add_bullet("Kepala TI PTPN Kantor Pusat (Jakarta) — Aktor manusia tingkat pimpinan holding yang bertugas memantau metrik konsolidasi tonase holding, memantau SLA uptime gateway (99.8%), mengevaluasi kepatuhan SAP holding, dan mencetak laporan eksekutif holding tanpa form input timbangan manual.", "● ")
+    add_bullet("Server SAP Kantor Pusat — Entitas sistem eksternal pendukung yang menerima payload XML dan mengirimkan respons konfirmasi HTTP 200 OK.", "● ")
+    add_bullet("Network Gateway (Debian VM / IP VPN) — Komponen infrastruktur eksternal hasil Kerja Praktek sebelumnya yang menjadi jalur transmisi data terenkripsi.", "● ")
+
+    add_h3("4.2.3 Perancangan Prosedur yang Diusulkan")
+    add_h3("4.2.3.1 Use Case Diagram (Ditegaskan HANYA 2 Aktor)")
+    add_p("Untuk mengetahui gambaran interaksi antara sistem dan aktor yang terlibat pada sistem yang diusulkan, sistem dimodelkan dengan Use Case Diagram yang HANYA MEMILIKI 2 AKTOR MANUSIA: Admin TI Regional 3 dan Kepala TI PTPN Kantor Pusat Jakarta.")
+    add_p("Hubungan use case kedua aktor:")
+    add_bullet("Admin TI Regional 3 berelasi dengan use case: Login Sistem, Input Transaksi Timbangan, Hitung Netto Otomatis (<<include>>), Generate Dokumen XML ADO Rowset (<<include>>), Push Payload ke Server SAP (Satuan & All), Monitoring Dashboard & Status Regional, serta Kelola Log Integrasi SAP.", "1. Asosiasi Admin TI Regional 3: ")
+    add_bullet("Kepala TI PTPN Kantor Pusat Jakarta berelasi dengan use case: Login Sistem, Monitoring Executive Holding Dashboard, Pantau SLA Uptime Gateway Holding, Pantau Kepatuhan SAP Holding, Tinjau Matriks Kinerja 12 PKS, Tinjau Audit Ledger SAP Holding, dan Cetak Laporan Eksekutif Holding.", "2. Asosiasi Kepala TI Kantor Pusat: ")
+
+    add_h3("4.2.3.2 Skenario Use Case")
+    add_p("Skenario use case yang diusulkan dijabarkan secara rinci ke dalam format tabel spesifikasi kasus penggunaan sebagai berikut:")
+
+    # Skenario 1: Input Data Transaksi Timbangan (Persis Halaman 14 PDF)
+    add_p("1. Skenario Use Case Input Data Transaksi Timbangan", bold_prefix="", indent=0)
+    add_p("Tabel 4.12 Skenario Use Case Input Data Transaksi Timbangan", bold_prefix="")
+    headers_sc = ["Identifikasi / Alur", "Rincian Skenario"]
+    widths_sc = [2.0, 4.5]
+    data_sc_1 = [
+        ["Nama Use Case", "Input Data Transaksi Timbangan"],
+        ["Deskripsi", "Admin TI Regional 3 menginput data transaksi penimbangan TBS ke sistem melalui modul Transaksi & XML Engine."],
         ["Aktor", "Admin TI Regional 3"],
-        ["Deskripsi", "Mencatat transaksi timbangan TBS pabrik dan menghasilkan berkas XML ADO Rowset resmi."],
-        ["Kondisi Awal (Pre-Condition)", "Admin TI Regional 3 telah berhasil login dan berada pada menu Transaksi & XML Engine."],
-        ["Kondisi Akhir (Post-Condition)", "Data transaksi tersimpan di database dengan status XML 'Generated' dan Netto terhitung."],
-        ["Alur Utama (Main Flow)", "1. Admin mengisi nomor plat kendaraan, memilih lokasi dari 12 unit PKS, jam masuk/keluar, bobot Gross, dan bobot Tarra.\n2. Admin menekan tombol Simpan & Generate XML.\n3. Sistem secara otomatis menghitung Netto = Gross - Tarra.\n4. Sistem membentuk dokumen XML ADO Recordset dengan skema s:Schema, rs:rowbase, dan elemen z:row sesuai standar korporasi.\n5. Sistem menyimpan berkas XML ke storage dan memperbarui tabel transaksi_timbangans.\n6. Tampilan antarmuka menampilkan notifikasi sukses dan preview XML stream interaktif."],
-        ["Alur Alternatif", "Jika nilai Tarra melebihi Gross, sistem menampilkan validasi peringatan nilai tidak valid dan meminta koreksi input."]
+        ["Pre-Condition", "Admin telah masuk ke halaman Dashboard Sistem Informasi PKS Weighbridge."],
+        ["Aksi Aktor", "1. Admin membuka modul Transaksi & XML Engine.\n2. Admin memasukkan plat kendaraan, lokasi PKS, jam masuk/keluar, Gross, dan Tara lalu menekan tombol 'Simpan & Auto Generate XML'."],
+        ["Reaksi Sistem", "1. Sistem menghitung Netto = Gross - Tara secara otomatis.\n2. Sistem menyusun nomor nota otomatis dan menyimpan data transaksi.\n3. Sistem menampilkan notifikasi bahwa data berhasil disimpan dengan status 'Pending'."],
+        ["Skenario Alternatif", "Jika data tidak lengkap atau format salah, sistem menampilkan pesan validasi error dan data tidak disimpan."],
+        ["Post-Condition", "Data transaksi tersimpan dengan status 'Pending' dan siap digenerate menjadi dokumen XML."]
     ]
-    create_styled_table(headers_sc1, data_sc2, widths_sc1, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+    create_styled_table(headers_sc, data_sc_1, widths_sc, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
 
-    # Skenario 3: Push to SAP (Admin Regional)
-    add_p("Tabel 4.3 Skenario Use Case 3: Push Data Transaksi ke SAP ERP (Khusus Admin Regional)", bold_prefix="")
-    data_sc3 = [
-        ["Nama Use Case", "Transmisi Payload XML ke SAP ERP Server (UC-03)"],
+    # Skenario 2: Generate & Push Dokumen XML ke SAP (Persis Halaman 15 PDF)
+    add_p("2. Skenario Use Case Generate & Push Dokumen XML ke SAP", bold_prefix="", indent=0)
+    add_p("Tabel 4.13 Skenario Use Case Generate & Push Dokumen XML ke SAP", bold_prefix="")
+    data_sc_2 = [
+        ["Nama Use Case", "Generate & Push Dokumen XML ke SAP"],
+        ["Deskripsi", "Sistem menyusun dokumen XML dari data transaksi dan mengirimkannya ke Server SAP melalui jalur integrasi."],
+        ["Aktor", "Admin TI Regional 3, Sistem (otomatis), Server SAP"],
+        ["Pre-Condition", "Data transaksi telah tersimpan dan berstatus 'Pending'."],
+        ["Aksi Aktor", "1. Admin menekan tombol 'Push SAP' atau 'Preview XML' pada tabel historical ledger, atau menekan 'Kirim Semua Antrean ke SAP'."],
+        ["Reaksi Sistem", "1. Sistem menyusun dokumen XML sesuai skema SAP-Compliant (ADO Rowset).\n2. Sistem meneruskan payload XML menuju jalur integrasi (Network Gateway).\n3. Server SAP menerima dan memvalidasi struktur data, lalu mengirim respons HTTP 200 OK.\n4. Sistem memperbarui status transaksi menjadi 'Sent' beserta nomor referensi SAP.\n5. Admin menerima notifikasi bahwa data berhasil dikirim."],
+        ["Skenario Alternatif", "Jika struktur data tidak valid atau jalur integrasi terputus, sistem mencatat status 'Failed/Rejected' pada Log Integrasi SAP."],
+        ["Post-Condition", "Status transaksi ter-update menjadi 'Sent' dan tercatat pada Log Integrasi SAP."]
+    ]
+    create_styled_table(headers_sc, data_sc_2, widths_sc, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+
+    # Skenario 3: Monitoring Dashboard & Status (Persis Halaman 16 PDF)
+    add_p("3. Skenario Use Case Monitoring Dashboard & Status", bold_prefix="", indent=0)
+    add_p("Tabel 4.14 Skenario Use Case Monitoring Dashboard & Status Regional", bold_prefix="")
+    data_sc_3 = [
+        ["Nama Use Case", "Monitoring Dashboard & Status Regional"],
+        ["Deskripsi", "Admin memantau ringkasan status integrasi secara real-time melalui modul Dashboard."],
         ["Aktor", "Admin TI Regional 3"],
-        ["Deskripsi", "Mengirimkan dokumen XML transaksi yang telah tervalidasi menuju server SAP ERP holding."],
-        ["Kondisi Awal (Pre-Condition)", "Transaksi timbangan telah berstatus XML 'Generated' dan berstatus SAP 'Pending'."],
-        ["Kondisi Akhir (Post-Condition)", "Status transaksi pada database diperbarui menjadi 'SENT' dan tercatat pada log SAP."],
-        ["Alur Utama (Main Flow)", "1. Admin memilih baris transaksi berstatus PENDING atau menekan tombol 'Kirim Semua ke SAP'.\n2. Sistem membaca payload XML ADO Rowset dari storage/database.\n3. Sistem mengirimkan payload melalui koneksi private IP VPN menuju endpoint SAP BAPI.\n4. Server SAP merespons dengan status 200 OK dan nomor referensi verifikasi.\n5. Sistem memperbarui status_sap menjadi 'SENT' dan mengisi waktu sap_sent_at.\n6. Sistem mencatat aktivitas ke tabel log_integrasi_saps."],
-        ["Alur Alternatif", "Jika koneksi VPN terputus, sistem mempertahankan status 'Pending' dan menampilkan peringatan kegagalan transmisi."]
+        ["Pre-Condition", "Admin telah masuk ke halaman Dashboard Sistem Informasi PKS Weighbridge."],
+        ["Aksi Aktor", "1. Admin membuka modul Dashboard & Monitoring."],
+        ["Reaksi Sistem", "1. Sistem menampilkan total XML dihasilkan, status Sent/Pending, status konektivitas per unit PKS, dan status kesiapan server SAP."],
+        ["Skenario Alternatif", "Jika data monitoring gagal dimuat, sistem menampilkan notifikasi error koneksi."],
+        ["Post-Condition", "Admin memperoleh gambaran kondisi sistem operasional secara real-time."]
     ]
-    create_styled_table(headers_sc1, data_sc3, widths_sc1, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+    create_styled_table(headers_sc, data_sc_3, widths_sc, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
 
-    # Skenario 4: Monitoring Holding (Kepala TI Pusat)
-    add_p("Tabel 4.4 Skenario Use Case 4: Monitoring Konsolidasi & SLA Holding (Khusus Kepala TI Pusat)", bold_prefix="")
-    data_sc4 = [
-        ["Nama Use Case", "Executive Holding Monitoring & SLA Tracking (UC-04)"],
+    # Skenario 4: Kelola Log Integrasi SAP (Persis Halaman 16-17 PDF)
+    add_p("4. Skenario Use Case Kelola Log Integrasi SAP", bold_prefix="", indent=0)
+    add_p("Tabel 4.15 Skenario Use Case Kelola Log Integrasi SAP", bold_prefix="")
+    data_sc_4 = [
+        ["Nama Use Case", "Kelola Log Integrasi SAP"],
+        ["Deskripsi", "Admin meninjau riwayat/audit trail seluruh transaksi pengiriman data ke SAP."],
+        ["Aktor", "Admin TI Regional 3"],
+        ["Pre-Condition", "Terdapat data log transaksi yang telah/berencana dikirim pada sistem."],
+        ["Aksi Aktor", "1. Admin membuka modul Log Integrasi SAP.\n2. Admin dapat memfilter/mencari log berdasarkan unit PKS atau status."],
+        ["Reaksi Sistem", "1. Sistem menampilkan nomor referensi SAP, waktu kirim, dan status respons.\n2. Sistem menampilkan hasil pencarian log sesuai filter yang dipilih."],
+        ["Skenario Alternatif", "Jika ditemukan transaksi berstatus gagal (Rejected), admin dapat memicu pengiriman ulang (retry)."],
+        ["Post-Condition", "Admin memperoleh laporan status integrasi yang akurat."]
+    ]
+    create_styled_table(headers_sc, data_sc_4, widths_sc, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+
+    # Skenario 5: Executive Holding Monitoring & SLA Tracking (Khusus Kepala TI Pusat)
+    add_p("5. Skenario Use Case Executive Holding Monitoring & SLA Tracking", bold_prefix="", indent=0)
+    add_p("Tabel 4.16 Skenario Use Case Executive Holding Monitoring & SLA Tracking", bold_prefix="")
+    data_sc_5 = [
+        ["Nama Use Case", "Executive Holding Monitoring & SLA Tracking"],
+        ["Deskripsi", "Kepala TI Kantor Pusat Jakarta memantau konsolidasi tonase makro, keandalan SLA gateway holding, dan kepatuhan SAP."],
         ["Aktor", "Kepala TI PTPN Kantor Pusat (Jakarta)"],
-        ["Deskripsi", "Memantau data makro konsolidasi tonase, keandalan SLA gateway, dan status integrasi SAP 12 PKS."],
-        ["Kondisi Awal (Pre-Condition)", "Kepala TI Kantor Pusat telah login dan berada pada URL /dashboard/pusat."],
-        ["Kondisi Akhir (Post-Condition)", "Kepala TI memperoleh visualisasi holistik kinerja operasional timbangan tanpa form input."],
-        ["Alur Utama (Main Flow)", "1. Kepala TI membuka Executive Monitoring Dashboard.\n2. Sistem menghitung agregasi total Netto TBS (Ton), persentase sinkronisasi SAP, dan SLA uptime gateway.\n3. Sistem merender grafik distribusi tonase 12 unit PKS dan proporsi status SAP.\n4. Sistem memuat peta topologi interaktif Leaflet data hub Pekanbaru ke Jakarta DC.\n5. Kepala TI meninjau matriks tabel 12 PKS dan dapat melakukan filter pencarian nama pabrik.\n6. Kepala TI meninjau tabel audit trail 15 transaksi terakhir yang terverifikasi SAP holding."],
-        ["Alur Alternatif", "Kepala TI dapat menekan tombol 'Beralih ke Dashboard Admin Regional 3' jika memerlukan verifikasi teknis mendalam."]
+        ["Pre-Condition", "Kepala TI telah login dan berada pada URL /dashboard/pusat."],
+        ["Aksi Aktor", "1. Kepala TI membuka Executive Monitoring Dashboard.\n2. Kepala TI meninjau kartu KPI holding, grafik tonase per PKS, dan peta interaktif data hub.\n3. Kepala TI memfilter data matriks performa 12 PKS."],
+        ["Reaksi Sistem", "1. Sistem menyajikan agregasi total Netto TBS (Ton & Kg), persentase sinkronisasi SAP, dan SLA uptime gateway 99.8%.\n2. Sistem merender visualisasi Chart.js dan peta Leaflet koneksi Pekanbaru ke Jakarta DC.\n3. Sistem memfilter baris tabel PKS secara instan sesuai kata kunci pencarian."],
+        ["Skenario Alternatif", "Kepala TI dapat mengklik tombol pintas beralih dashboard jika memerlukan peninjauan teknis jembatan timbang."],
+        ["Post-Condition", "Kepala TI memperoleh visibilitas strategis holding tanpa dibebani antarmuka form tiket operasional."]
     ]
-    create_styled_table(headers_sc1, data_sc4, widths_sc1, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+    create_styled_table(headers_sc, data_sc_5, widths_sc, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
 
-    # Skenario 5: Cetak Laporan Eksekutif (Kepala TI Pusat)
-    add_p("Tabel 4.5 Skenario Use Case 5: Cetak Laporan Konsolidasi Eksekutif (Khusus Kepala TI Pusat)", bold_prefix="")
-    data_sc5 = [
-        ["Nama Use Case", "Cetak Laporan Konsolidasi Eksekutif Holding (UC-05)"],
+    # Skenario 6: Cetak Laporan Eksekutif Holding
+    add_p("6. Skenario Use Case Cetak Laporan Eksekutif Holding", bold_prefix="", indent=0)
+    add_p("Tabel 4.17 Skenario Use Case Cetak Laporan Eksekutif Holding", bold_prefix="")
+    data_sc_6 = [
+        ["Nama Use Case", "Cetak Laporan Eksekutif Holding"],
+        ["Deskripsi", "Kepala TI Kantor Pusat mencetak rekapitulasi data konsolidasi kinerja holding secara resmi."],
         ["Aktor", "Kepala TI PTPN Kantor Pusat (Jakarta)"],
-        ["Deskripsi", "Menghasilkan format cetak resmi dari ringkasan kinerja konsolidasi timbangan regional."],
-        ["Kondisi Awal (Pre-Condition)", "Kepala TI Pusat berada pada Executive Dashboard."],
-        ["Kondisi Akhir (Post-Condition)", "Dokumen laporan cetak rapi siap diunduh sebagai PDF atau dicetak fisik."],
-        ["Alur Utama (Main Flow)", "1. Kepala TI menekan tombol 'Cetak Laporan Eksekutif'.\n2. Sistem memicu fungsi window.print() dengan menerapkan stylesheet media print khusus (@media print).\n3. Elemen-elemen non-cetak (tombol navigasi, header animasi, peta dinamis) disembunyikan otomatis.\n4. Tabel matriks 12 PKS dan kartu KPI dikonversi menjadi layout dokumen resmi hitam-putih/hijau berstandar holding.\n5. Kepala TI mengonfirmasi pencetakan dokumen fisik atau ekspor berkas PDF."],
-        ["Alur Alternatif", "Jika dibatalkan oleh pengguna, peramban kembali ke tampilan dashboard tanpa perubahan."]
+        ["Pre-Condition", "Kepala TI berada pada Executive Dashboard."],
+        ["Aksi Aktor", "1. Kepala TI menekan tombol 'Cetak Laporan Eksekutif'."],
+        ["Reaksi Sistem", "1. Sistem memicu fungsi window.print() dengan menerapkan stylesheet @media print khusus dokumen resmi.\n2. Sistem menyembunyikan tombol navigasi, peta, dan elemen interaktif.\n3. Dialog cetak peramban muncul dengan format laporan konsolidasi rapi siap cetak/ekspor PDF."],
+        ["Skenario Alternatif", "Jika dibatalkan oleh pengguna, peramban kembali ke tampilan dashboard tanpa perubahan data."],
+        ["Post-Condition", "Dokumen cetak laporan konsolidasi eksekutif holding berhasil dihasilkan."]
     ]
-    create_styled_table(headers_sc1, data_sc5, widths_sc1, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
+    create_styled_table(headers_sc, data_sc_6, widths_sc, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
 
-    add_h3("4.3.3 Activity Diagram")
-    add_p("Activity diagram memodelkan alir aktivitas sistem secara sekuensial. Sistem ini memiliki 2 jalur aktivitas utama berdasarkan aktor:")
-    add_bullet("Alur aktivitas mencakup: Login -> Akses Modul Operasional -> Isi Form Timbangan -> Klik Simpan -> Sistem Hitung Netto -> Sistem Bentuk ADO XML -> Tampilkan Preview -> Klik Push SAP -> Sistem Kirim Payload via VPN -> Validasi Status SENT -> Perbarui Audit Log.", "1. Aktivitas Admin TI Regional 3: ")
-    add_bullet("Alur aktivitas mencakup: Login -> Redirection ke Executive Dashboard -> Sistem Agregasi Metrik 12 PKS -> Sistem Render Peta Data Hub & Grafik -> Kepala TI Pantau SLA & Tonase -> Filter Matriks Pabrik -> Tinjau Audit Ledger SAP -> Klik Cetak Laporan Eksekutif -> Cetak Dokumen Rekapitulasi.", "2. Aktivitas Kepala TI Kantor Pusat Jakarta: ")
+    add_h3("4.2.3.3 Activity Diagram")
+    add_p("Activity Diagram menggambarkan berbagai alir aktivitas sistem yang sedang dirancang, bagaimana alir itu berawal, decision yang mungkin terjadi, dan bagaimana alir aktivitas tersebut berakhir (mengacu pada Gambar 4.3 dan Gambar 4.4 dokumen analisis):")
+    add_bullet("Admin membuka modul Transaksi & XML Engine -> Admin mengisi & submit form (plat, Gross, Tara, jam masuk/keluar) -> Sistem melakukan validasi (Data lengkap & valid?) -> Jika Tidak, kembali ke form input transaksi -> Jika Ya, Sistem menghitung Netto = Gross - Tara, menyimpan data (status Pending), menyusun dokumen XML ADO Rowset -> Selesai.", "1. Activity Diagram Input Data Transaksi Timbangan: ")
+    add_bullet("Admin menekan tombol Push SAP -> Sistem menyusun dokumen XML SAP-Compliant (ADO Rowset) -> Sistem mengirim payload via jalur integrasi VPN -> Server SAP menerima & memvalidasi struktur data (Struktur Data Valid?) -> Jika Tidak, Sistem mencatat status Failed pada Log Integrasi (Perlu Retry) -> Jika Ya, Server SAP mengirim respons HTTP 200 OK -> Sistem update status menjadi Sent & catat historical log -> Admin menerima notifikasi status Sent -> Selesai.", "2. Activity Diagram Generate & Push Dokumen XML ke SAP: ")
+    add_bullet("Kepala TI login ke sistem -> Sistem redirect ke Executive Dashboard -> Sistem mengagregasi total tonase 12 PKS, hitung rasio SAP, hitung SLA gateway 99.8% -> Sistem render peta data hub dan grafik -> Kepala TI meninjau matriks 12 PKS dan audit ledger -> Kepala TI klik Cetak Laporan Eksekutif -> Sistem membuka jendela cetak resmi -> Selesai.", "3. Activity Diagram Executive Holding Monitoring & Cetak Laporan: ")
 
-    add_h3("4.3.4 Sequence Diagram")
-    add_p("Sequence diagram menggambarkan interaksi objek sepanjang waktu. Pada proses transmisi data (Push SAP), urutan interaksi objek adalah:")
-    add_bullet("Admin TI Regional 3 menekan tombol Push SAP pada Blade View.", "1. ")
-    add_bullet("Blade View mengirimkan permintaan HTTP POST menuju route bridge.push di BridgeController.", "2. ")
-    add_bullet("BridgeController mengambil data transaksi dari model TransaksiTimbangan.", "3. ")
-    add_bullet("BridgeController memanggil metode privat buildAdoXmlString() untuk menyusun payload XML standar Microsoft ADO Rowset.", "4. ")
-    add_bullet("BridgeController mengirimkan payload XML melalui gateway komunikasi ke Server SAP.", "5. ")
-    add_bullet("Server SAP mengembalikan status HTTP 200 OK beserta nomor dokumen referensi SAP.", "6. ")
-    add_bullet("BridgeController memperbarui status transaksi menjadi 'SENT' dan mencatat riwayat ke model LogIntegrasiSap.", "7. ")
-    add_bullet("Sistem mengembalikan respons sukses ke antarmuka pengguna disertai pembaruan metrik pada Executive Dashboard Kepala TI Pusat.", "8. ")
+    add_h3("4.2.3.4 Sequence Diagram")
+    add_p("Sequence diagram atau diagram urutan adalah diagram interaksi yang menekankan pada pengiriman pesan (message) dalam suatu waktu tertentu. Penamaan objek pada sequence diagram mengacu pada struktur program yang diusulkan, yaitu Blade View, BridgeController, Session/MySQL sebagai data store, dan fungsi generator XML (mengacu pada Gambar 4.5 dan Gambar 4.6 dokumen analisis):")
+    add_bullet("1. Operator/Admin mengisi form no plat, Gross, Tara, jam masuk/keluar pada Dashboard Blade - Form Transaksi -> 2. Form men-submit route bridge.store() ke BridgeController -> 3. BridgeController memanggil fungsi hitung netto = gross - tarra() -> 4. BridgeController memanggil generate nota_no otomatis() -> 5. BridgeController memanggil simpan data transaksi status Pending() ke Data Store -> 6. Data Store mengonfirmasi data tersimpan() -> 7. BridgeController me-redirect dengan pesan sukses() -> 8. Dashboard Blade menampilkan notifikasi XML Pending().", "1. Sequence Diagram Input Data Transaksi & Generate XML: ")
+    add_bullet("1. Operator/Admin klik tombol Push SAP() pada Tabel Historical Ledger -> 2. Ledger men-request route bridge.push(id) ke BridgeController -> 3. BridgeController memanggil susun dokumen XML SAP-Compliant() ke XML Generator Engine -> 4. XML Generator Engine mengembalikan string XML() -> 5. BridgeController memanggil kirim payload XML via jalur integrasi VPN() ke Server SAP Kantor Pusat -> 6. Server SAP merespons respons HTTP 200 OK() -> 7. BridgeController memanggil update status_sap menjadi SENT() ke Data Store -> 8. BridgeController me-redirect dengan pesan sukses() -> 9. Tabel Historical Ledger menampilkan status SENT / VERIFIED().", "2. Sequence Diagram Generate & Push Dokumen XML ke SAP: ")
+    add_bullet("1. Kepala TI Pusat mengakses route /dashboard/pusat -> 2. BridgeController memanggil method pusatDashboard() -> 3. BridgeController meminta agregasi data dari model TransaksiTimbangan dan UnitPks -> 4. BridgeController menghitung tonase holding, % SAP, dan SLA 99.8% -> 5. BridgeController mengembalikan view dashboard_pusat -> 6. Peramban merender Chart.js dan peta spasial Leaflet -> 7. Kepala TI meninjau laporan dan dapat memicu print layout.", "3. Sequence Diagram Executive Holding Dashboard: ")
 
-    add_h3("4.3.5 Class Diagram")
-    add_p("Struktur kelas sistem dimodelkan dengan memisahkan representasi entitas data (Models) dan pengontrol alur bisnis (Controllers). Kelas-kelas utama meliputi:")
-    add_bullet("Menangani autentikasi login, regenerasi token sesi, pengecekan peran (role), pencatatan sesi aktif, dan logout.", "1. AuthController: ")
-    add_bullet("Menangani pemuatan dashboard regional, dashboard eksekutif pusat (pusatDashboard), komputasi netto (store), penghapusan transaksi (destroy), pembuatan XML ADO (buildAdoXmlString), dan transmisi SAP (pushSap, pushAllSap).", "2. BridgeController: ")
-    add_bullet("Entitas pengguna sistem yang memuat atribut: id, name, username, email, password, role ('Admin Regional' atau 'Kepala TI Pusat').", "3. User: ")
-    add_bullet("Entitas transaksi penimbangan yang memuat atribut: id, unit_pks_id, nota_no, no_plat, pks_loc, jam_masuk, jam_keluar, gross, tarra, netto, vpn_ip, status_vpn, xml_status, status_sap, sap_sent_at.", "4. TransaksiTimbangan: ")
-    add_bullet("Entitas data master 12 pabrik: id, kode_unit, nama_unit, lokasi, ip_vpn, status_vpn, status_wifi, kapasitas_olah_tph, latitude, longitude.", "5. UnitPks: ")
-    add_bullet("Entitas audit jejak rekam pengiriman ke SAP: id, transaksi_id, pks_origin, sap_ref_no, status_transmisi, waktu_kirim, response_payload.", "6. LogIntegrasiSap: ")
-    add_bullet("Entitas riwayat login: id, user_id, nama_pengguna, username, role, ip_address, user_agent, login_at, logout_at, status.", "7. RiwayatLogin: ")
+    add_h3("4.2.3.5 Class Diagram")
+    add_p("Class Diagram digunakan untuk menggambarkan kelas-kelas di dalam sistem beserta atribut dan method-nya. Diagram ini juga memberikan gambaran sistem secara statis dan relasi antar kelas (mengacu pada Gambar 4.7 dokumen analisis):")
+    add_p("Class Diagram menggambarkan enam kelas utama sistem:")
+    add_bullet("Atribut: id, name, username, password, role. Method: login(), logout().", "1. User (Pengguna Sistem): ")
+    add_bullet("Atribut: id, namaUnit, lokasi, ipAddressVPN. Method: getStatusKoneksi(). Relasi: 1 UnitPKS memiliki 0..* TransaksiTimbangan.", "2. UnitPKS (Data Master Unit PKS): ")
+    add_bullet("Atribut: id, noPlat, idUnitPKS, jamMasuk, jamKeluar, gross, tara, netto, status. Method: hitungNetto(), simpanTransaksi(). Relasi: 1 TransaksiTimbangan menghasilkan 1 XMLDocument.", "3. TransaksiTimbangan (Entitas Transaksi Penimbangan): ")
+    add_bullet("Atribut: id, idTransaksi, skemaXML, waktuGenerate, filePath. Method: generateXML(), validasiSkema(). Relasi: 1 XMLDocument tercatat pada 1 LogIntegrasiSAP.", "4. XMLDocument (Dokumen XML Hasil Generate): ")
+    add_bullet("Atribut: id, idTransaksi, noReferensiSAP, waktuKirim, statusRespons, kodeHTTP. Method: catatLog().", "5. LogIntegrasiSAP (Audit Trail Pengiriman Data): ")
+    add_bullet("Method: kirimPayload(XMLDocument), cekStatusKoneksi(), terimaRespons(), pusatDashboard(). Mengirimkan berkas ke SAP dan memperbarui status pada LogIntegrasiSAP.", "6. SAPGatewayService / BridgeController: ")
 
-    add_h3("4.3.6 Component Diagram")
-    add_p("Component diagram menggambarkan komponen fisik perangkat lunak dalam arsitektur aplikasi:")
-    add_bullet("Browser Klien (Google Chrome / Edge) pada komputer kerja Admin Regional 3 dan Kepala TI Pusat.", "1. User Interface Component: ")
-    add_bullet("Routing Engine, Middleware Auth, AuthController, dan BridgeController di bawah Laravel 11.", "2. Application Controller Component: ")
-    add_bullet("Fungsi buildAdoXmlString() yang memanfaatkan ekstensi PHP DOMDocument untuk menyusun skema ADO Recordset.", "3. XML Generator Engine Component: ")
-    add_bullet("Database MySQL db_timbangan yang diakses melalui Eloquent ORM.", "4. Data Persistence Component: ")
-    add_bullet("Server SAP ERP Holding di Jakarta dan Gateway Debian Linux VM di Pekanbaru.", "5. External Infrastructure Component: ")
+    add_h3("4.2.3.6 Component Diagram")
+    add_p("Component adalah unit fisik yang nyata yang menjadi bagian dari deployment independent. Perancangan komponen pada aplikasi yang diusulkan mengikuti struktur berkas program Laravel yang dibangun (mengacu pada Gambar 4.8 dokumen analisis):")
+    add_bullet("routes/web.php — mendefinisikan route (bridge.store, bridge.push, bridge.xml, bridge.pushAll, pusat.dashboard, login, logout, dsb.) yang mengarah ke BridgeController.php dan AuthController.php.", "● ")
+    add_bullet("BridgeController.php — komponen inti backend yang menangani seluruh logika bisnis: input transaksi, perhitungan Netto, pemanggilan fungsi generator XML, modul executive dashboard, serta transmisi push ke SAP.", "● ")
+    add_bullet("AuthController.php — komponen autentikasi yang memverifikasi kredensial dan melakukan redirection dinamis berdasarkan peran (Admin Regional atau Kepala TI Pusat).", "● ")
+    add_bullet("dashboard.blade.php (View) — antarmuka web operasional yang menampilkan form input, tabel historical ledger, peta 12 PKS, dan log integrasi SAP kepada Admin TI Regional 3.", "● ")
+    add_bullet("dashboard_pusat.blade.php (View) — antarmuka eksekutif holding yang menampilkan kartu metrik KPI makro, grafik tonase, peta data hub Jakarta, matriks 12 PKS, dan print layout kepada Kepala TI Kantor Pusat.", "● ")
+    add_bullet("MySQL Data Store (db_timbangan) — media penyimpanan persisten data transaksi, data master 12 PKS, log integrasi, dan riwayat login.", "● ")
+    add_bullet("buildAdoXmlString() — fungsi generator yang mengonversi data transaksi mentah menjadi dokumen XML sesuai skema Microsoft ADO Recordset resmi perusahaan.", "● ")
+    add_bullet("Network Gateway (Debian VM) — komponen infrastruktur eksternal hasil Kerja Praktek sebelumnya, berperan sebagai jalur transmisi data terenkripsi menuju Server SAP.", "● ")
+    add_bullet("Server SAP Kantor Pusat — sistem eksternal sebagai penerima akhir data terintegrasi.", "● ")
 
-    add_h2("4.4 Perancangan Basis Data (Entity Relationship Diagram)")
-    add_p("Basis data sistem dirancang dengan nama db_timbangan. Relasi antar-tabel dimodelkan sebagai berikut:")
-    add_bullet("Satu unit PKS (UnitPks) dapat memiliki banyak transaksi penimbangan (TransaksiTimbangan) [Relasi 1 to Many].", "1. ")
-    add_bullet("Satu transaksi timbangan (TransaksiTimbangan) dapat memiliki banyak riwayat log pengiriman (LogIntegrasiSap) [Relasi 1 to Many].", "2. ")
-    add_bullet("Satu pengguna (User) dapat memiliki banyak rekaman riwayat sesi (RiwayatLogin) [Relasi 1 to Many].", "3. ")
+    add_h2("4.3 Perancangan Basis Data (Entity Relationship Diagram)")
+    add_p("Basis data sistem dirancang dengan nama db_timbangan menggunakan model relasional. Relasi antar-entitas terjalin secara konsisten:")
+    add_bullet("Satu unit PKS (UnitPks) memiliki banyak transaksi penimbangan (TransaksiTimbangan).", "1. ")
+    add_bullet("Satu transaksi timbangan (TransaksiTimbangan) memiliki relasi jejak audit pengiriman pada (LogIntegrasiSap).", "2. ")
+    add_bullet("Satu pengguna (User) memiliki relasi rekam jejak aktivitas sesi pada (RiwayatLogin).", "3. ")
 
     # Struktur Tabel Users
-    add_p("Tabel 4.6 Struktur Tabel Pengguna (users)", bold_prefix="")
+    add_p("Tabel 4.18 Struktur Tabel Pengguna (users)", bold_prefix="")
     headers_tb_u = ["Nama Kolom", "Tipe Data", "Panjang / Nilai", "Atribut / Keterangan"]
     widths_tb_u = [1.8, 1.4, 1.5, 1.8]
     data_tb_u = [
@@ -571,7 +802,7 @@ def create_full_report():
     create_styled_table(headers_tb_u, data_tb_u, widths_tb_u, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.LEFT])
 
     # Struktur Tabel Transaksi
-    add_p("Tabel 4.7 Struktur Tabel Transaksi Timbangan (transaksi_timbangans)", bold_prefix="")
+    add_p("Tabel 4.19 Struktur Tabel Transaksi Timbangan (transaksi_timbangans)", bold_prefix="")
     headers_tb_t = ["Nama Kolom", "Tipe Data", "Panjang / Nilai", "Atribut / Keterangan"]
     data_tb_t = [
         ["id", "BIGINT", "20", "Primary Key, Auto Increment, Unsigned"],
@@ -593,11 +824,11 @@ def create_full_report():
     ]
     create_styled_table(headers_tb_t, data_tb_t, widths_tb_u, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.LEFT])
 
-    add_h2("4.5 Perancangan Antarmuka Pengguna (Wireframe & Layout)")
-    add_p("Perancangan antarmuka memisahkan secara tegas pengalaman visual kedua aktor:")
-    add_bullet("Menampilkan kartu formulir login terpusat, logo resmi PTPN IV PalmCo, indikator sistem terintegrasi, serta tombol bantuan pengisian otomatis kredensial untuk mempermudah demonstrasi pengujian 2 aktor.", "1. Rancangan Halaman Login (/login): ")
-    add_bullet("Menampilkan sidebar menu navigasi hijau tua (Forest Green), kartu ringkasan antrean XML, tabel operasional data timbangan, modal input timbangan baru, widget generator XML interaktif, peta Leaflet 12 PKS, tabel riwayat sesi login, dan tombol beralih cepat ke Dashboard Pusat.", "2. Rancangan Dashboard Admin TI Regional 3 (/dashboard): ")
-    add_bullet("Menampilkan header eksekutif holding dengan badge peran khusus, 4 kartu KPI holding (Tonase Bersih Terkonsolidasi dalam Ton & Kg, Persentase Sinkronisasi SAP, SLA Jaringan Gateway 99.8%, dan Kesiapan 12 Node PKS), grafik batang distribusi tonase per pabrik, grafik donat status SAP, peta topologi data hub Jakarta-Pekanbaru, tabel matriks 12 PKS tanpa form input manual, log audit verifikasi holding, serta tombol cetak laporan eksekutif resmi.", "3. Rancangan Executive Monitoring Dashboard (/dashboard/pusat): ")
+    add_h2("4.4 Perancangan Antarmuka Pengguna (Wireframe & Layout)")
+    add_p("Perancangan antarmuka pengguna memisahkan secara tegas pengalaman visual kedua aktor:")
+    add_bullet("Rancangan Halaman Login: Menampilkan kartu form login modern, logo PTPN IV PalmCo, serta tombol bantuan pengisian otomatis kredensial 2 aktor untuk mempermudah pengujian.", "1. ")
+    add_bullet("Rancangan Dashboard Admin TI Regional 3: Menampilkan sidebar hijau tua khas PTPN, form modal penimbangan baru, widget live ADO XML generator, tabel data tiket timbangan, peta Leaflet 12 PKS regional, tabel riwayat sesi login, dan tombol beralih cepat ke Dashboard Pusat.", "2. ")
+    add_bullet("Rancangan Executive Holding Dashboard: Menampilkan header eksekutif holding, 4 kartu KPI makro (Tonase Netto Terkonsolidasi, % Sinkronisasi SAP, SLA Gateway 99.8%, 12 Node PKS), grafik batang distribusi tonase, grafik donat status SAP, peta topologi data hub Jakarta-Pekanbaru, tabel matriks 12 PKS tanpa form input manual, log audit verifikasi holding, serta tombol cetak laporan eksekutif resmi.", "3. ")
 
     doc.add_page_break()
 
@@ -731,17 +962,23 @@ def create_full_report():
     ]
     create_styled_table(headers_cred, data_cred, widths_cred, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.LEFT])
 
-    # Simpan Berkas Laporan Final sesuai Judul Resmi
-    output_filename = "LAPORAN_FINAL_AUTO_GENERATE_CONFIG_XML_PTPN4.docx"
-    doc.save(output_filename)
-    print(f"Laporan Final Tugas Akhir berhasil dibuat: {output_filename}")
+    # Simpan Berkas Laporan Final
+    # 1. Simpan ke LAPORAN_FINAL_TUGAS_AKHIR_AUTOXML_GATEWAY.docx (WRITABLE)
+    target1 = "LAPORAN_FINAL_TUGAS_AKHIR_AUTOXML_GATEWAY.docx"
+    doc.save(target1)
+    print(f"Laporan berhasil disimpan di: {target1}")
 
-    # Juga update LAPORAN_FINAL_TUGAS_AKHIR_AUTOXML_GATEWAY.docx jika tidak sedang dikunci Word
+    # 2. Simpan ke nama baru yang pasti tidak terkunci
+    target2 = "LAPORAN_FINAL_TA_AUTO_GENERATE_CONFIG_XML_PTPN4_LENGKAP.docx"
+    doc.save(target2)
+    print(f"Laporan versi lengkap berhasil disimpan di: {target2}")
+
+    # 3. Coba simpan ke LAPORAN_FINAL_AUTO_GENERATE_CONFIG_XML_PTPN4.docx jika sudah ditutup di Word
     try:
-        doc.save("LAPORAN_FINAL_TUGAS_AKHIR_AUTOXML_GATEWAY.docx")
-        print("File LAPORAN_FINAL_TUGAS_AKHIR_AUTOXML_GATEWAY.docx juga berhasil diperbarui.")
+        doc.save("LAPORAN_FINAL_AUTO_GENERATE_CONFIG_XML_PTPN4.docx")
+        print("Laporan juga berhasil diperbarui di: LAPORAN_FINAL_AUTO_GENERATE_CONFIG_XML_PTPN4.docx")
     except PermissionError:
-        print("Catatan: File lama sedang dibuka di Microsoft Word, pembaruan telah disimpan di: LAPORAN_FINAL_AUTO_GENERATE_CONFIG_XML_PTPN4.docx")
+        print("Catatan: LAPORAN_FINAL_AUTO_GENERATE_CONFIG_XML_PTPN4.docx sedang dibuka di Word.")
 
 if __name__ == "__main__":
     create_full_report()
