@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Script Generator Laporan Final Tugas Akhir Lengkap (.docx)
-Judul: RANCANG BANGUN SISTEM INFORMASI PKS WEIGHBRIDGE – SAP INTEGRATION GATEWAY BERBASIS WEB PADA PT PERKEBUNAN NUSANTARA IV
+Judul Resmi: AUTO GENERATE CONFIG XML PADA TIMBANGAN PTPN 4 REGIONAL 3 UNTUK MELEMPAR DATA KE SISTEM SAP KANTOR PUSAT
 Penulis: Muhammad Nur Almuttakin
 Aktor: 2 Aktor Sistem (Admin TI Regional 3 & Kepala TI PTPN Kantor Pusat Jakarta)
 """
@@ -186,8 +186,8 @@ def create_full_report():
     p_cov_title = doc.add_paragraph()
     p_cov_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_cov_title.paragraph_format.space_before = Pt(12)
-    p_cov_title.paragraph_format.space_after = Pt(28)
-    r_title = p_cov_title.add_run("RANCANG BANGUN SISTEM INFORMASI PKS WEIGHBRIDGE – SAP INTEGRATION GATEWAY BERBASIS WEB MENGGUNAKAN METODE WATERFALL PADA PT PERKEBUNAN NUSANTARA IV")
+    p_cov_title.paragraph_format.space_after = Pt(24)
+    r_title = p_cov_title.add_run("AUTO GENERATE CONFIG XML PADA TIMBANGAN PTPN 4 REGIONAL 3 UNTUK MELEMPAR DATA KE SISTEM SAP KANTOR PUSAT")
     r_title.bold = True
     r_title.font.size = Pt(14)
     r_title.font.color.rgb = RGBColor(11, 70, 41)
@@ -196,7 +196,7 @@ def create_full_report():
     p_cov_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_cov_sub.paragraph_format.space_before = Pt(6)
     p_cov_sub.paragraph_format.space_after = Pt(40)
-    r_sub = p_cov_sub.add_run("Penerapan Integrasi AutoXML ADO Rowset Jembatan Timbang Menuju SAP ERP Enterprise Berbasis Dual-Aktor (Admin TI Regional III & Kepala TI Kantor Pusat Jakarta)")
+    r_sub = p_cov_sub.add_run("Penerapan Integrasi AutoXML ADO Rowset Jembatan Timbang Menuju SAP ERP Enterprise Berbasis Dual-Aktor (Admin TI Regional 3 & Kepala TI PTPN Kantor Pusat Jakarta)")
     r_sub.italic = True
     r_sub.font.size = Pt(11)
 
@@ -222,7 +222,7 @@ def create_full_report():
 
     # ================= KATA PENGANTAR & RINGKASAN EKSEKUTIF =================
     add_h1("RINGKASAN EKSEKUTIF")
-    add_p("Laporan Tugas Akhir ini menyajikan rancang bangun dan implementasi sistem jembatan integrasi enterprise bernama AutoXML Gateway (PKS Weighbridge – SAP Integration Gateway) pada PT Perkebunan Nusantara IV (PTPN IV PalmCo). Sistem ini menyelesaikan kesenjangan interoperabilitas data antara perangkat timbangan mekanik/digital lokal pada 12 unit Pabrik Kelapa Sawit (PKS) di Regional III dengan sistem Enterprise Resource Planning (ERP) SAP di Kantor Pusat.")
+    add_p("Laporan Tugas Akhir ini menyajikan rancang bangun dan implementasi sistem berjudul \"Auto Generate Config XML Pada Timbangan PTPN 4 Regional 3 Untuk Melempar Data Ke Sistem SAP Kantor Pusat\" (AutoXML Gateway) pada PT Perkebunan Nusantara IV (PTPN IV PalmCo). Sistem ini menyelesaikan kesenjangan interoperabilitas data antara perangkat timbangan mekanik/digital lokal pada 12 unit Pabrik Kelapa Sawit (PKS) di Regional III dengan sistem Enterprise Resource Planning (ERP) SAP di Kantor Pusat.")
     add_p("Inovasi arsitektur sistem ini menerapkan pembagian hak akses dan antarmuka secara presisi berbasis 2 Aktor Utama Sistem:")
     add_bullet("Memiliki wewenang operasional penuh mencakup pencatatan data penimbangan TBS, validasi Bruto-Tarra-Netto, pengawasan konektivitas VPN 12 unit PKS, konversi otomatis berkas transaksi ke dalam struktur XML ADO Rowset berstandar korporasi, serta eksekusi pengiriman payload menuju server SAP Regional/Pusat.", "1. Admin TI Regional 3: ")
     add_bullet("Memiliki wewenang manajerial dan pemantauan eksekutif tingkat holding (Kantor Pusat Jakarta). Antarmuka aktor ini menyajikan konsolidasi data makro tonase seluruh unit PKS Regional III, pemantauan SLA gateway (99.8%), rasio kepatuhan sinkronisasi SAP ERP Holding, visualisasi spasial data hub Jakarta-Sumatera, serta tinjauan audit trail verifikasi transaksi tanpa dibebani formulir input operasional timbangan.", "2. Kepala TI PTPN Kantor Pusat (Jakarta): ")
@@ -238,7 +238,7 @@ def create_full_report():
     add_p("Pada unit operasional PTPN IV Regional III, terdapat 12 unit PKS aktif yang tersebar di wilayah Sumatera Utara dan Riau, yaitu: PKS Pabatu, PKS Sawit Seberang, PKS Bah Jambi, PKS Mayang, PKS Tanah Hitam, PKS Sei Galuh, PKS Sei Pagar, PKS Tandun, PKS Lubuk Dalam, PKS Terantam, PKS Tanah Putih, dan PKS Sei Tapung. Setiap harinya, ribuan ton TBS masuk melalui jembatan timbang pada masing-masing unit PKS tersebut.")
     add_p("Namun demikian, berdasarkan hasil observasi dan analisis operasional pada unit Teknologi Informasi PTPN IV Regional III, ditemukan kendala mendasar pada proses integrasi data timbangan menuju sistem ERP SAP holding. Selama ini, data penimbangan lokal disimpan dalam basis data stasiun kerja masing-masing pabrik. Untuk mengirimkan data ke sistem SAP di Kantor Pusat, petugas administrasi harus melakukan rekapitulasi manual atau mengekspor berkas spreadsheet secara berkala. Proses ini tidak hanya menyita waktu (time-consuming), tetapi juga rentan terhadap human-error (salah ketik plat nomor atau angka berat), keterlambatan laporan tonase harian, serta risiko ketidaksesuaian skema XML yang dipersyaratkan oleh modul BAPI/RFC SAP.")
     add_p("Selain itu, dari perspektif tata kelola TI korporasi, terdapat kesenjangan visibilitas informasi antara operasional regional dengan kantor pusat di Jakarta. Kepala Divisi TI Kantor Pusat membutuhkan ringkasan eksekutif real-time mengenai konsolidasi tonase seluruh pabrik, keandalan jaringan private VPN antar-unit, dan persentase keberhasilan pengiriman transaksi ke SAP holding, tanpa harus mengakses menu input transaksi operasional timbangan yang rumit.")
-    add_p("Berdasarkan permasalahan tersebut, dirancang dan dibangun sebuah sistem informasi terpadu berbasis web berjudul Sistem Informasi PKS Weighbridge – SAP Integration Gateway (AutoXML Gateway) yang secara otomatis mentransformasikan data penimbangan menjadi format standar XML ADO Rowset korporasi dan mengintegrasikannya secara berjenjang kepada 2 Aktor Utama: Admin TI Regional 3 dan Kepala TI PTPN Kantor Pusat Jakarta.")
+    add_p("Berdasarkan permasalahan tersebut, dirancang dan dibangun sistem berjudul \"Auto Generate Config XML Pada Timbangan PTPN 4 Regional 3 Untuk Melempar Data Ke Sistem SAP Kantor Pusat\" yang secara otomatis mentransformasikan data penimbangan menjadi format standar XML ADO Rowset korporasi dan mengintegrasikannya secara berjenjang kepada 2 Aktor Utama: Admin TI Regional 3 dan Kepala TI PTPN Kantor Pusat Jakarta.")
 
     add_h2("1.2 Identifikasi Masalah")
     add_p("Berdasarkan latar belakang yang telah dipaparkan, diidentifikasi beberapa permasalahan pokok sebagai berikut:")
@@ -304,7 +304,7 @@ def create_full_report():
         ["1", "Prasetyo & Pratama (2022)", "Otomatisasi Data Jembatan Timbang Berbasis IoT dan REST API", "Metode Prototyping, ESP32, RESTful API, MySQL", "Mengotomatisasi pembacaan indikator timbangan, namun belum menghasilkan format data XML standar SAP holding."],
         ["2", "Siregar et al. (2023)", "Integrasi Sistem Informasi Timbangan Sawit Terhadap SAP ERP PTPN", "Waterfall, Visual Basic, XML RPC, SAP BAPI", "Membahas integrasi penimbangan ke SAP, namun masih menggunakan arsitektur desktop konvensional tanpa dashboard eksekutif."],
         ["3", "Kurniawan & Hidayat (2024)", "Rancang Bangun Executive Information System Monitoring Produksi PKS", "Agile Scrum, PHP Laravel, PostgreSQL, GIS Leaflet", "Mengembangkan dashboard GIS untuk pimpinan, namun tidak mencakup modul bridge generator XML jembatan timbang."],
-        ["4", "Almuttakin (2026 - Penelitian Ini)", "Rancang Bangun AutoXML Gateway PKS Weighbridge – SAP Berbasis Dual Aktor", "Waterfall SDLC, Laravel 11, XML ADO Rowset, MySQL, Dual-Role", "Menjembatani kelemahan penelitian terdahulu dengan otomasi XML ADO Rowset resmi, konektivitas 12 PKS, dan 2 peran aktor tegas."]
+        ["4", "Almuttakin (2026 - Penelitian Ini)", "Auto Generate Config XML Pada Timbangan PTPN 4 Regional 3 Untuk Melempar Data Ke Sistem SAP Kantor Pusat", "Waterfall SDLC, Laravel 11, XML ADO Rowset, MySQL, Dual-Role", "Menjembatani kelemahan penelitian terdahulu dengan otomasi XML ADO Rowset resmi, konektivitas 12 PKS, dan 2 peran aktor tegas."]
     ]
     create_styled_table(headers_lit, data_lit, widths_lit, [WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.JUSTIFY])
 
@@ -663,7 +663,7 @@ def create_full_report():
     add_h1("BAB VI\nPENUTUP")
     
     add_h2("6.1 Kesimpulan")
-    add_p("Berdasarkan seluruh tahapan perancangan, implementasi, dan pengujian sistem informasi AutoXML Gateway (PKS Weighbridge – SAP Integration Gateway) pada PT Perkebunan Nusantara IV, dapat ditarik beberapa kesimpulan utama:")
+    add_p("Berdasarkan seluruh tahapan perancangan, implementasi, dan pengujian sistem \"Auto Generate Config XML Pada Timbangan PTPN 4 Regional 3 Untuk Melempar Data Ke Sistem SAP Kantor Pusat\" pada PT Perkebunan Nusantara IV, dapat ditarik beberapa kesimpulan utama:")
     add_bullet("Sistem informasi AutoXML Gateway berbasis web berhasil dirancang dan dibangun menggunakan metode Waterfall dengan memanfaatkan framework Laravel 11 dan basis data MySQL.", "1. Keberhasilan Pembangunan Sistem: ")
     add_bullet("Sistem berhasil menerapkan arsitektur berjenjang berbasis 2 Aktor Utama: Admin TI Regional 3 untuk wewenang operasional penimbangan dan transmisi data lokal; serta Kepala TI PTPN Kantor Pusat Jakarta untuk wewenang pengawasan eksekutif holding.", "2. Penerapan Dual-Aktor yang Tepat: ")
     add_bullet("Proses konversi data transaksi penimbangan menjadi format dokumen XML ADO Rowset korporasi (xmlns:rs='urn:schemas-microsoft-com:rowset') telah berhasil diotomatisasi, mengeliminasi proses manual dan mencegah human-error.", "3. Standarisasi dan Otomasi XML: ")
@@ -731,10 +731,17 @@ def create_full_report():
     ]
     create_styled_table(headers_cred, data_cred, widths_cred, [WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.LEFT])
 
-    # Simpan Berkas Laporan Final
-    output_filename = "LAPORAN_FINAL_TUGAS_AKHIR_AUTOXML_GATEWAY.docx"
+    # Simpan Berkas Laporan Final sesuai Judul Resmi
+    output_filename = "LAPORAN_FINAL_AUTO_GENERATE_CONFIG_XML_PTPN4.docx"
     doc.save(output_filename)
     print(f"Laporan Final Tugas Akhir berhasil dibuat: {output_filename}")
+
+    # Juga update LAPORAN_FINAL_TUGAS_AKHIR_AUTOXML_GATEWAY.docx jika tidak sedang dikunci Word
+    try:
+        doc.save("LAPORAN_FINAL_TUGAS_AKHIR_AUTOXML_GATEWAY.docx")
+        print("File LAPORAN_FINAL_TUGAS_AKHIR_AUTOXML_GATEWAY.docx juga berhasil diperbarui.")
+    except PermissionError:
+        print("Catatan: File lama sedang dibuka di Microsoft Word, pembaruan telah disimpan di: LAPORAN_FINAL_AUTO_GENERATE_CONFIG_XML_PTPN4.docx")
 
 if __name__ == "__main__":
     create_full_report()
